@@ -4,6 +4,7 @@ namespace App\Domains\Products\Services;
 
 use App\Domains\Products\Repositories\Contracts\ProductRepositoryInterface;
 use App\Domains\Products\Models\Product;
+use Illuminate\Pagination\LengthAwarePaginator;
 
 class ProductService
 {
@@ -11,9 +12,9 @@ class ProductService
         protected ProductRepositoryInterface $repository
     ) {}
 
-    public function create(array $data, int $tenantId): Product
+    public function create(array $data): Product
     {
-        $data['tenant_id'] = $tenantId;
+        $data['tenant_id'] = app()->get(id: 'currentTenant')->id;
         $data['active'] = true;
 
         return $this->repository->create($data);
@@ -29,5 +30,18 @@ class ProductService
         return $this->repository->update($product, [
             'active' => false
         ]);
+    }
+
+    public function index(int $perPage = 15): LengthAwarePaginator 
+    {
+        $tenantId = app()->get(id: 'currentTenant')->id;
+
+        return $this->repository->paginate(tenantId: $tenantId, perPage: $perPage);
+    }
+
+    public function getById(int $id) : Product 
+    {
+        $tenantId = app()->get(id: 'currentTenant')->id;
+        return $this->repository->findById($id);
     }
 }
