@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Domain\Orders\Models;
+namespace App\Domains\Orders\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Order extends Model
 {
@@ -18,18 +17,8 @@ class Order extends Model
         'user_id'
     ];
 
-    // public function tenant(): BelongsTo
-    // {
-    //     return $this->belongsTo(\App\Models\Tenant::class);
-    // }
-
-    // public function customer(): BelongsTo
-    // {
-    //     return $this->belongsTo(\App\Domain\Customers\Models\Customer::class);
-    // }
-
-    // public function user(): BelongsTo
-    // {
-    //     return $this->belongsTo(\App\Models\User::class);
-    // }
+    public function items()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
 }

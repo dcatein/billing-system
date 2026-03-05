@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Domains\Products\Http;
+namespace App\Domains\Products\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Domains\Products\Services\ProductService;
 use App\Domains\Products\Repositories\Contracts\ProductRepositoryInterface;
-use App\Domains\Products\Http\Requests\StoreProductRequest;
-use App\Domains\Products\Http\Requests\UpdateProductRequest;
+use App\Domains\Products\Controllers\Requests\StoreProductRequest;
+use App\Domains\Products\Controllers\Requests\UpdateProductRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class ProductController extends Controller
+class ApiProductController extends Controller
 {
     public function __construct(
         protected ProductService $service,

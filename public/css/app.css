@@ -1,0 +1,325 @@
+:root {
+  --color-main: #252525;
+  --color-first: #f9f9f9;
+  --color-text: #151515;
+  --color-text-second: #fc8e00;
+}
+
+* {
+  font-family: "Poppins";
+}
+
+body {
+  background-color: #f6f9ff;
+}
+
+img {
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+}
+
+#header {
+  height: 60px;
+  padding-left: 20px;
+  background: var(--color-main);
+}
+
+.toggle-sidebar-btn {
+  font-size: 32px !important;
+  cursor: pointer;
+  padding-left: 10px;
+  margin-right: 0 !important;
+  color: var(--color-text-second);
+}
+
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  bottom: 0;
+  width: 300px;
+  z-index: 996;
+  transition: all 0.3s ease;
+  padding: 20px;
+  color: var(--color-text-second);
+  background-color: var(--color-main);
+}
+
+.nav-item {
+  margin-bottom: 15px;
+}
+
+.nav-link {
+  font-size: 15px;
+  font-weight: 600;
+  padding: 10px 15px;
+  border-radius: 4px;
+}
+
+.bi {
+  font-size: 16px;
+  margin-right: 10px;
+}
+
+.btn:hover {
+  color: var(--color-first);
+}
+
+.nav-item:hover {
+  background-color: var(--color-first);
+  border-radius: 10px;
+  transition: all 0.4s ease;
+}
+
+.main {
+  margin-top: 60px;
+  padding: 20px;
+}
+
+a {
+  text-decoration: none;
+}
+
+.breadcrumb a:hover {
+  color: var(--color-text-second);
+}
+
+.breadcrumb a {
+  color: var(--color-main);
+  transition: 0.3s;
+}
+
+.breadcrumb .breadcrumb-item::before {
+  color: #fc8e00 !important;
+}
+
+hr {
+  margin: 10px;
+}
+
+.card-body {
+  padding: 0 20px 20px 20px;
+}
+
+.dashboard .info-card {
+  padding-bottom: 10px;
+}
+
+.card {
+  margin-bottom: 30px;
+  border: none;
+  border-radius: 5px;
+}
+
+.dashboard .sales-card .card-icon {
+  color: var(--color-text-second);
+  background-color: var(--color-first);
+}
+
+.dashboard .card-icon {
+  font-size: 32px;
+  line-height: 0;
+  width: 64px;
+  height: 64px;
+  flex-shrink: 0;
+  flex-grow: 0;
+}
+
+.dashboard .info-card h6 {
+  font-size: 28px;
+  color: var(--color-text);
+  font-weight: 700;
+  margin: 0;
+  padding: 0;
+}
+
+.dashboard .filter .icon:hover,
+.dashboard .filter .icon:focus {
+  color: var(--color-text-second);
+}
+
+.icon {
+  color: var(--color-main);
+}
+
+.dashboard .filter {
+  position: absolute;
+  right: 0;
+  top: 15px;
+}
+
+.card-title {
+  padding: 20px 0 15px 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.dropdown-menu {
+  border-radius: 4px;
+  padding: 10px 0;
+  animation-name: dropdown-animate;
+  animation-duration: 0.2s;
+  animation-fill-mode: both;
+  border: 0;
+}
+
+.footer {
+  padding: 20px 0;
+  font-size: 14px;
+  transition: all 0.3s;
+  border-top: 1px solid var(--color-text-second);
+}
+
+.dashboard .recent-sales {
+  font-size: 14px;
+}
+
+.card-title span {
+  color: var(--color-text-second);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.datatable-top::after,
+.datatable-bottom::after {
+  clear: both;
+  content: " ";
+  display: table;
+}
+
+.datatable-top,
+.datatable-bottom {
+  padding: 8px 10px;
+}
+
+.datatable-top > nav:first-child,
+.datatable-top > div:first-child,
+.datatable-bottom > nav:first-child,
+.datatable-bottom > div:first-child {
+  float: left;
+}
+
+.datatable-input {
+  padding: 6px 12px;
+}
+
+.datatable-selector {
+  padding: 6px;
+}
+
+.datatable-top > nav:last-child,
+.datatable-top > div:not(first-child),
+.datatable-bottom > nav:last-child,
+.datatable-bottom > div:last-child {
+  float: right;
+}
+
+.datatable-table {
+  max-width: 100%;
+  width: 100%;
+  border-spacing: 0;
+  border-collapse: separate;
+}
+
+.dashboard .recent-sales .table thead {
+  background-color: var(--color-first);
+}
+
+.dashboard .recent-sales .table thead th {
+  border: 0;
+}
+.datatable-table > tbody > tr > td,
+.datatable-table > tbody > tr > th,
+.datatable-table > tfoot > tr > td,
+.datatable-table > tfoot > tr > th,
+.datatable-table > thead > tr > td,
+.datatable-table > thead > tr > th {
+  padding: 8px 10px;
+}
+
+.datatable-sorter::after {
+  border-bottom: 4px solid #000;
+  border-top: 4px solid transparent;
+  top: 0px;
+}
+
+.datatable-sorter::before {
+  border-top: 4px solid #000;
+  bottom: 0px;
+}
+
+.datatable-table > thead > tr > th {
+  vertical-align: bottom;
+  text-align: left;
+  border-bottom: 1px solid #d9d9d9;
+}
+
+.table > thead {
+  vertical-align: bottom;
+}
+
+.datatable-sorter::before,
+.datatable-sorter::after {
+  content: "";
+  height: 0;
+  width: 0;
+  position: absolute;
+  right: 4px;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  opacity: 0.2;
+}
+
+label {
+  display: inline-block;
+}
+
+.datatable-sorter,
+.datatable-filter {
+  display: inline-block;
+  height: 100%;
+  position: relative;
+  width: 100%;
+}
+
+.datatable-table th button,
+.datatable-pagination-list button {
+  color: inherit;
+  border: 0;
+  background-color: inherit;
+  cursor: pointer;
+  text-align: inherit;
+  font-weight: inherit;
+  font-size: inherit;
+}
+
+.datatable-info {
+  margin: 7px 0;
+}
+
+.datatable-pagination ul {
+  margin: 0;
+  padding-left: 0;
+}
+
+td > a {
+  color: var(--color-text-second);
+}
+
+.datatable-selector > option {
+  font-family: "Poppins", sans-serif;
+}
+
+.datatable-pagination-list > .page-item > a {
+  color: var(--color-text);
+}
+
+.datatable-pagination-list > .page-item > a:hover {
+  color: var(--color-text-second);
+}
+
+.datatale-pagination {
+  float: right;
+}

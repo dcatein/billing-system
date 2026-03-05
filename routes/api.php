@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Domains\Products\Http\ProductController;
+use App\Domains\Products\Controllers\ApiProductController as ProductController;
 use App\Support\Tenancy\ResolveTenant;
 
     Route::middleware(ResolveTenant::class)

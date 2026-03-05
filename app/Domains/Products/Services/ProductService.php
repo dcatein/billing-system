@@ -14,7 +14,7 @@ class ProductService
 
     public function create(array $data): Product
     {
-        $data['tenant_id'] = app()->get(id: 'currentTenant')->id;
+        // $data['tenant_id'] = app()->get(id: 'currentTenant')->id;
         $data['active'] = true;
 
         return $this->repository->create($data);
@@ -34,14 +34,14 @@ class ProductService
 
     public function index(int $perPage = 15): LengthAwarePaginator 
     {
-        $tenantId = app()->get(id: 'currentTenant')->id;
+        $tenantId = 2;
 
         return $this->repository->paginate(tenantId: $tenantId, perPage: $perPage);
     }
 
     public function getById(int $id) : Product 
     {
-        $tenantId = app()->get(id: 'currentTenant')->id;
+        // $tenantId = app()->get(id: 'currentTenant')->id;
         return $this->repository->findById($id);
     }
 }
