@@ -8,17 +8,29 @@ use Illuminate\Support\Facades\Route;
 //     return view('welcome');
 // });
 
-Route::get('/', action: function () {
-    return view('dashboard.index');
-})->middleware(['auth', 'verified'])
-->name('dashboard.index');
+// Route::get('/', action: function () {
+//     return view('dashboard.index');
+// })->middleware(['auth', 'verified'])
+// ->name('dashboard');
 
-Route::middleware('auth')->group(function () {
+Route::middleware('verified')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+
+    // Route::resource(name: 'products', ViewProductController::class);
+
 });
 
-Route::resource('products', ViewProductController::class);
+Route::middleware('auth')->group(function () {
 
-require __DIR__.'/auth.php';
+    Route::get('/', function () {
+        return view('dashboard.index');
+    })->name('dashboard');
+    Route::resource(name: 'products', controller: ViewProductController::class);
+});
+
+
+
+require __DIR__ . '/auth.php';
