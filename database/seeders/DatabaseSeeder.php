@@ -21,6 +21,15 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
+
+        DB::table('tenants')->insert([
+            'id' => 9,
+            'name' => 'Empresa ID 9',
+            'slug' => 'empresa ID 9',
+            'created_at' => now(),
+            'updated_at' => now()
+        ]);
+        
         
         DB::table('users')->insert([
             'id' => $userId,
