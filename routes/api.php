@@ -2,7 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Domains\Products\Controllers\ApiProductController as ProductController;
-use App\Support\Tenancy\ResolveTenant;
+use App\Http\Middleware\ResolveTenant;
 
     Route::middleware(ResolveTenant::class)
         ->prefix('products')
