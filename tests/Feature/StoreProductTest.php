@@ -11,13 +11,22 @@ class StoreProductTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_Product_create()
+
+    protected $user;
+
+    protected function setUp(): void
     {
+        parent::setUp();
+
         $this->seed();
 
-        $user = User::find(99);
-
-        $response = $this->actingAs($user)->postJson(route('products.store'), [
+        $this->user = User::find(99);
+    }
+    
+    public function test_Product_create()
+    {
+        $response = $this->actingAs($this->user)->postJson(route('products.store'),
+         [
             "name" => "Produto Teste",
             "sku" => "SKU123",
             "barcode" => "7890000000000",
@@ -30,11 +39,7 @@ class StoreProductTest extends TestCase
 
     public function test_product_name_is_required()
     {
-         $this->seed();
-
-         $user = User::find(99);
-
-         $response = $this->actingAs($user)->postJson(route('products.store'), [
+         $response = $this->actingAs($this->user)->postJson(route('products.store'), [
             "name" => "",
             "sku" => "SKU123",
             "barcode" => "7890000000000",
@@ -46,11 +51,7 @@ class StoreProductTest extends TestCase
 
     public function test_product_name_must_be_string()
     {   
-        $this->seed();
-
-         $user = User::find(99);
-
-         $response = $this->actingAs($user)->postJson(route('products.store'), [
+        $response = $this->actingAs($this->user)->postJson(route('products.store'), [
         'name' => 123,
         'price' => 10
         ]);
@@ -60,11 +61,7 @@ class StoreProductTest extends TestCase
 
     public function test_product_name_exceeds_maximum_characters()
     {
-         $this->seed();
-
-         $user = User::find(99);
-
-        $response = $this->actingAs($user)->postJson(route('products.store'), [
+        $response = $this->actingAs($this->user)->postJson(route('products.store'), [
         'name' => str_repeat('a', 256),
         'price' => 10
         ]);
@@ -74,11 +71,7 @@ class StoreProductTest extends TestCase
 
     public function test_product_price_is_required()
     {
-         $this->seed();
-
-         $user = User::find(99);
-
-         $response = $this->actingAs($user)->postJson(route('products.store'), [
+         $response = $this->actingAs($this->user)->postJson(route('products.store'), [
             "name" => "Produto Teste",
             "sku" => "SKU123",
             "barcode" => "7890000000000"
@@ -89,11 +82,7 @@ class StoreProductTest extends TestCase
 
     public function test_product_price_must_be_numeric()
     {
-        $this->seed();
-
-        $user = User::find(99);
-
-        $response = $this->actingAs($user)->postJson(route('products.store'), [
+        $response = $this->actingAs($this->user)->postJson(route('products.store'), [
             "name" => "Produto Teste",
             "price" => "abc",
         ]);
@@ -103,11 +92,7 @@ class StoreProductTest extends TestCase
 
     public function test_product_price_min_zero()
     {
-        $this->seed();
-
-        $user = User::find(99);
-
-        $response = $this->actingAs($user)->postJson(route('products.store'), [
+        $response = $this->actingAs($this->user)->postJson(route('products.store'), [
             "name" => "Produto Teste",
             "price" => -10,
         ]);
@@ -117,11 +102,7 @@ class StoreProductTest extends TestCase
 
     public function test_product_sku_must_be_string()
     {
-        $this->seed();
-
-        $user = User::find(99);
-
-        $response = $this->actingAs($user)->postJson(route('products.store'), [
+        $response = $this->actingAs($this->user)->postJson(route('products.store'), [
             "name" => "Produto Teste",
             "sku" => 12345,
             "price" => 100,
@@ -132,11 +113,7 @@ class StoreProductTest extends TestCase
 
     public function test_product_sku_max_255()
     {
-        $this->seed();
-
-        $user = User::find(99);
-
-        $response = $this->actingAs($user)->postJson(route('products.store'), [
+        $response = $this->actingAs($this->user)->postJson(route('products.store'), [
             "name" => "Produto Teste",
             "sku" => str_repeat("a", 256),
             "price" => 100,
@@ -147,11 +124,7 @@ class StoreProductTest extends TestCase
 
     public function test_product_barcode_must_be_string()
     {
-        $this->seed();
-
-        $user = User::find(99);
-
-        $response = $this->actingAs($user)->postJson(route('products.store'), [
+        $response = $this->actingAs($this->user)->postJson(route('products.store'), [
             "name" => "Produto Teste",
             "barcode" => 123456,
             "price" => 100,
@@ -162,11 +135,7 @@ class StoreProductTest extends TestCase
 
     public function test_product_barcode_max_255()
     {
-        $this->seed();
-
-        $user = User::find(99);
-
-        $response = $this->actingAs($user)->postJson(route('products.store'), [
+        $response = $this->actingAs($this->user)->postJson(route('products.store'), [
             "name" => "Produto Teste",
             "barcode" => str_repeat("a", 256),
             "price" => 100,
@@ -177,11 +146,7 @@ class StoreProductTest extends TestCase
 
     public function test_product_category_must_exist()
     {
-        $this->seed();
-
-        $user = User::find(99);
-
-        $response = $this->actingAs($user)->postJson(route('products.store'), [
+        $response = $this->actingAs($this->user)->postJson(route('products.store'), [
             "name" => "Produto Teste",
             "price" => 100,
             "category_id" => 999999,
