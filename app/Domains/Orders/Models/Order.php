@@ -2,10 +2,13 @@
 
 namespace App\Domains\Orders\Models;
 
+use App\Domains\Tenants\Traits\BelongsToTenant;
 use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model
 {
+    use BelongsToTenant;
+
     protected $fillable = [
         'status',
         'subtotal',

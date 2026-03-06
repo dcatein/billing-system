@@ -11,17 +11,8 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $userId = 1;
+        $userId = 99;
         $tenantId = 2;
-
-        DB::table('users')->insert([
-            'id' => $userId,
-            'name' => 'Admin',
-            'email' => 'admin@email.com',
-            'password' => Hash::make('password'),
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
 
         DB::table('tenants')->insert([
             'id' => $tenantId,
@@ -30,13 +21,17 @@ class DatabaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
-
-        DB::table('tenant_users')->insert([
+        
+        DB::table('users')->insert([
+            'id' => $userId,
+            'name' => 'Admin',
+            'email' => 'admin@email.com',
+            'password' => Hash::make('password'),
             'tenant_id' => $tenantId,
-            'user_id' => $userId,
-            'role' => 'owner',
             'created_at' => now(),
             'updated_at' => now()
         ]);
+
+        
     }
 }

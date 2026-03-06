@@ -34,9 +34,7 @@ class ProductService
 
     public function index(int $perPage = 15): LengthAwarePaginator 
     {
-        $tenantId = 2;
-
-        return $this->repository->paginate(tenantId: $tenantId, perPage: $perPage);
+        return $this->repository->paginate(perPage: $perPage);
     }
 
     public function getById(int $id) : Product 

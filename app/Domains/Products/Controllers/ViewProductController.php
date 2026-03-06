@@ -4,6 +4,7 @@ namespace App\Domains\Products\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Domains\Products\Services\ProductService;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ViewProductController extends Controller
@@ -26,7 +27,7 @@ class ViewProductController extends Controller
 
     public function store(Request $request)
     {
-        $tenantId = 2;
+        $tenantId = Auth::getSession()->get('tenant_id');
 
         $data = $request->validate([
             'name' => 'required|string',

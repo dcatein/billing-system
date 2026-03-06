@@ -3,7 +3,7 @@
 namespace App\Domains\Products\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use App\Support\Tenancy\BelongsToTenant;
+use App\Domains\Tenants\Traits\BelongsToTenant;
 
 class Product extends Model
 {

@@ -2,6 +2,7 @@
 
 use App\Domains\Products\Controllers\ViewProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Middleware\ResolveTenant;
 use Illuminate\Support\Facades\Route;
 
 // Route::get('/', function () {
@@ -23,7 +24,7 @@ Route::middleware('verified')->group(function () {
 
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', ResolveTenant::class])->group(function () {
 
     Route::get('/', function () {
         return view('dashboard.index');
