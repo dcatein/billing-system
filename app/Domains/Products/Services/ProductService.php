@@ -40,4 +40,9 @@ class ProductService
     {
         return $this->repository->findById($id);
     }
+
+    public function delete(Product $product): void
+    {
+        $this->repository->delete($product);
+    }
 }

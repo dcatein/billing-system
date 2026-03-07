@@ -40,4 +40,13 @@ class ApiProductController extends Controller
             $request->validated()
         );
     }
+
+    public function destroy($id): JsonResponse
+    {
+        $product = $this->service->getById($id);
+
+        $this->service->delete($product);
+
+        return new JsonResponse(null, 204);
+    }
 }
