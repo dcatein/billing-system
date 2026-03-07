@@ -41,78 +41,87 @@
                         </div>
                     </div>
                     <div class="datatable-container">
+
                         <table class="table table-striped datatable datatable-table">
                             <thead>
                                 <tr>
-                                    <th data-sortable="true" class="col-1">
-                                        <button class="datatable-sorter">
-                                            #
-                                        </button>
-                                    </th>
-                                    <th data-sortable="true" class="col-2">
-                                        <a href="">Status</a>
-                                    </th>
-
-                                    <th data-sortable="true" class="col-2">
-                                        <a href="">User</a>
-                                    </th>
-                                    <th data-sortable="true" class="col-1">
-                                        <a href="">Customer</a>
-                                    </th>
-                                    <th data-sortable="true" class="col-1">
-                                        <a href="">Subtotal</a>
-                                    </th>
-                                    <th class="col-1">
-                                        <a href="">Desconto</a>
-                                    </th>
-                                    <th data-sortable="true" class="col-1">
-                                        <a href="">Total</a>
-                                    </th>
-                                    <th></th>
+                                    <th>#</th>
+                                    <th>Status</th>
+                                    <th>User</th>
+                                    <th>Customer</th>
+                                    <th>Subtotal</th>
+                                    <th>Desconto</th>
+                                    <th>Total</th>
+                                    <th>Ações</th>
                                 </tr>
                             </thead>
-
                             <tbody>
-
                                 @foreach($orders as $order)
-
-                                    <tr data-index="0">
+                                    <!-- Linha principal -->
+                                    <tr class="order-row" data-order-id="{{ $order->id }}">
+                                        <td>{{ $order->id }}</td>
+                                        <td>{{ $order->status }}</td>
+                                        <td>{{ $order->user->name ?? $order->user_id }}</td>
+                                        <td>{{ $order->customer->name ?? $order->customer_id }}</td>
+                                        <td>{{ number_format($order->subtotal, 2, ',', '.') }}</td>
+                                        <td>{{ number_format($order->discount, 2, ',', '.') }}</td>
+                                        <td>{{ number_format($order->total, 2, ',', '.') }}</td>
                                         <td>
-                                            {{ $order->id }}
+                                            <a href="{{ route('orders.edit', $order->id) }}"
+                                                class="btn btn-sm btn-primary">Editar</a>
                                         </td>
+                                    </tr>
 
-                                        <td>
-                                            {{ $order->status }}
-                                        </td>
-
-                                        <td>
-                                            {{ $order->user_id }}
-                                        </td>
-
-                                        <td>
-                                            {{ $order->customer_id }}
-                                        </td>
-
-                                        <td>
-                                            {{ number_format($order->subtotal, 2) }}
-                                        </td>
-
-                                        <td>
-                                            {{ $order->discount }}
-                                        </td>
-
-                                        <td>
-                                            {{ number_format($order->total, 2) }}
-                                        </td>
-
-                                        <td>
-                                            AÇÕES
+                                    <!-- Linha oculta com os itens -->
+                                    <tr class="order-items-row d-none" id="order-items-{{ $order->id }}">
+                                        <td colspan="8">
+                                            <table class="table table-sm mb-0">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Produto</th>
+                                                        <th>Qtd</th>
+                                                        <th>Unitário</th>
+                                                        <th>Total</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($order->items as $item)
+                                                    <tr>
+                                                        <td>
+                                                            {{ $item->product->name ?? $item->description }}
+                                                        </td>
+                                                        <td> 
+                                                            {{ $item->quantity }}
+                                                        </td>
+                                                        <td> 
+                                                            {{ number_format($item->unit_price, 2, ',', '.') }}
+                                                        </td>
+                                                        <td>
+                                                            {{ number_format($item->total, 2, ',', '.') }}
+                                                        </td>
+                                                    </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
                                         </td>
                                     </tr>
                                 @endforeach
-
                             </tbody>
                         </table>
+
+                        <script>
+                            document.addEventListener('DOMContentLoaded', function () {
+                                document.querySelectorAll('.order-row').forEach(function (row) {
+                                    row.addEventListener('click', function () {
+                                        const orderId = this.dataset.orderId;
+                                        const itemsRow = document.getElementById('order-items-' + orderId);
+                                        itemsRow.classList.toggle('d-none');
+                                    });
+                                });
+                            });
+                        </script>
+
+
                     </div>
                     <div class="datatable-info">
                         Exibindo itens de 1 a 15
