@@ -1,16 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Domains\Products\Controllers\ApiProductController as ProductController;
+use App\Domains\Products\Controllers\ApiProductController;
 use App\Http\Middleware\ResolveTenant;
 
     Route::middleware(ResolveTenant::class)
         ->prefix('products')
         ->group(function () {
-            Route::get('/', [ProductController::class, 'index']);
-            Route::post('/', [ProductController::class, 'store'])->name('products.store');
-            Route::put('{product}', [ProductController::class, 'update']);
-            Route::delete('{product}', [ProductController::class, 'destroy']);
+            Route::get('/', [ApiProductController::class, 'index']);
+            Route::post('/', [ApiProductController::class, 'store'])->name('api.products.store');
+            Route::put('{product}', [ApiProductController::class, 'update']);
+            Route::delete('{product}', [ApiProductController::class, 'destroy']);
     });
 
 
