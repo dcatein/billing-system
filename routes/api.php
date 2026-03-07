@@ -8,7 +8,7 @@ use App\Http\Middleware\ResolveTenant;
         ->prefix('products')
         ->group(function () {
             Route::get('/', [ProductController::class, 'index']);
-            Route::post('/', [ProductController::class, 'store']);
+            Route::post('/', [ProductController::class, 'store'])->name('products.store');
             Route::put('{product}', [ProductController::class, 'update']);
             Route::delete('{product}', [ProductController::class, 'destroy']);
     });
