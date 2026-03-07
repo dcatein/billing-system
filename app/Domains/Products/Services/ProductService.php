@@ -42,4 +42,9 @@ class ProductService
         // $tenantId = app()->get(id: 'currentTenant')->id;
         return $this->repository->findById($id);
     }
+
+    public function delete(Product $product): void
+    {
+        $this->repository->delete($product);
+    }
 }

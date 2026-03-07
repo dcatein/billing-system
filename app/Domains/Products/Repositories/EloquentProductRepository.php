@@ -30,4 +30,9 @@ class EloquentProductRepository implements ProductRepositoryInterface
         $product->update($data);
         return $product;
     }
+
+    public function delete(Product $product): void
+    {
+        $product->delete();
+    }
 }
