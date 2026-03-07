@@ -2,14 +2,17 @@
 
 namespace App\Domains\Products\Controllers;
 
+use App\Shared\Http\Controllers\BaseCrudController;
 use App\Http\Controllers\Controller;
 use App\Domains\Products\Services\ProductService;
 use App\Domains\Products\Controllers\Requests\ViewProductControllerRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class ViewProductController extends Controller
+class ViewProductController extends BaseCrudController
 {
+    protected string $route = 'products';
+
     public function __construct(
         protected ProductService $service
     ) {}
@@ -29,14 +32,13 @@ class ViewProductController extends Controller
     {
         $this->service->create($request->validated());
         
-        return redirect()
-            ->route('products.index')
-            ->with('success', 'Produto criado com sucesso!');
+        return $this->successStore();
     }
 
     public function edit(int $id): View
     {
         $product = $this->service->getById($id);
+
         return view('products.edit', compact('product'));
     }
 
@@ -45,10 +47,8 @@ class ViewProductController extends Controller
         $product = $this->service->getById($id);
         
         $this->service->update($product, $request->validated());
-
-        return redirect()
-            ->route('products.index')
-            ->with('success', 'Produto atualizado com sucesso!');
+        
+        return $this->successUpdate();
     }
 
     public function destroy(int $id): RedirectResponse
@@ -56,8 +56,6 @@ class ViewProductController extends Controller
         $product = $this->service->getById($id);
         $this->service->delete($product);
 
-        return redirect()
-            ->route('products.index')
-            ->with('success', 'Produto excluído com sucesso!');
+        return $this->successDelete();
     }
 }
