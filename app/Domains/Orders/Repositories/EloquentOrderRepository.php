@@ -13,7 +13,7 @@ class EloquentOrderRepository implements OrderRepositoryInterface
         return Order::with('items.product')->paginate($perPage);
     }
 
-    public function find(int $id): Order
+    public function findById(int $id): Order
     {
         return Order::with('items.product')->findOrFail($id);
     }

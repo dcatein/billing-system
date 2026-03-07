@@ -14,7 +14,6 @@ class ProductService
 
     public function create(array $data): Product
     {
-        // $data['tenant_id'] = app()->get(id: 'currentTenant')->id;
         $data['active'] = true;
 
         return $this->repository->create($data);
@@ -39,7 +38,6 @@ class ProductService
 
     public function getById(int $id) : Product 
     {
-        // $tenantId = app()->get(id: 'currentTenant')->id;
         return $this->repository->findById($id);
     }
 }

@@ -11,36 +11,10 @@ class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
-        $userId = 99;
-        $tenantId = 2;
-
-        DB::table('tenants')->insert([
-            'id' => $tenantId,
-            'name' => 'Empresa Demo',
-            'slug' => 'empresa-demo',
-            'created_at' => now(),
-            'updated_at' => now()
+        $this->call([
+            BaseSeeder::class,
+            ProductSeeder::class,
+            OrdersSeeder::class
         ]);
-
-        DB::table('tenants')->insert([
-            'id' => 9,
-            'name' => 'Empresa ID 9',
-            'slug' => 'empresa ID 9',
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-        
-        
-        DB::table('users')->insert([
-            'id' => $userId,
-            'name' => 'Admin',
-            'email' => 'admin@email.com',
-            'password' => Hash::make('password'),
-            'tenant_id' => $tenantId,
-            'created_at' => now(),
-            'updated_at' => now()
-        ]);
-
-        
     }
 }

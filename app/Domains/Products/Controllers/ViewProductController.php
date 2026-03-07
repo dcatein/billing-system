@@ -4,7 +4,6 @@ namespace App\Domains\Products\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Domains\Products\Services\ProductService;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class ViewProductController extends Controller
@@ -27,8 +26,6 @@ class ViewProductController extends Controller
 
     public function store(Request $request)
     {
-        $tenantId = Auth::getSession()->get('tenant_id');
-
         $data = $request->validate([
             'name' => 'required|string',
             'sku' => 'nullable|string',
@@ -36,8 +33,6 @@ class ViewProductController extends Controller
             'price' => 'required|numeric',
             'active' => 'boolean'
         ]);
-
-        $data['tenant_id'] = $tenantId;
 
         $this->service->create($data);
 

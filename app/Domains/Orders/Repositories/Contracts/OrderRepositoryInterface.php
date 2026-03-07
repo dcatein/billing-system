@@ -9,7 +9,7 @@ interface OrderRepositoryInterface
 {
     public function paginate(int $perPage = 15): LengthAwarePaginator;
 
-    public function find(int $id): Order;
+    public function findById(int $id): Order;
 
     public function create(array $data): Order;
 

@@ -8,7 +8,7 @@
       </li>
       <hr>
       <li class="nav-item">
-        <a href="#" class="nav-link">
+        <a href="{{route('orders.index')}}" class="nav-link">
           <i class="bi bi-coin"></i>
           <span>Vendas</span>
         </a>
