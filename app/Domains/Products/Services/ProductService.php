@@ -5,6 +5,8 @@ namespace App\Domains\Products\Services;
 use App\Domains\Products\Repositories\Contracts\ProductRepositoryInterface;
 use App\Domains\Products\Models\Product;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Domains\Products\Exceptions\ProductNotFoundException;
+
 
 class ProductService
 {
@@ -38,7 +40,13 @@ class ProductService
 
     public function getById(int $id) : Product 
     {
-        return $this->repository->findById($id);
+        $product = $this->repository->findById($id);
+
+        if (!$product) {
+            throw new ProductNotFoundException();
+        }
+
+        return $product;
     }
 
     public function delete(Product $product): void
