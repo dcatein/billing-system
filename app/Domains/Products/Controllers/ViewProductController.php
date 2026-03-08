@@ -2,73 +2,60 @@
 
 namespace App\Domains\Products\Controllers;
 
+use App\Shared\Http\Controllers\BaseCrudController;
 use App\Http\Controllers\Controller;
 use App\Domains\Products\Services\ProductService;
-use Illuminate\Http\Request;
+use App\Domains\Products\Controllers\Requests\ViewProductControllerRequest;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
 
-class ViewProductController extends Controller
+class ViewProductController extends BaseCrudController
 {
+    protected string $route = 'products';
+
     public function __construct(
         protected ProductService $service
     ) {}
 
-    public function index()
+    public function index(): View
     {
         $products = $this->service->index();
-
         return view('products.index', compact('products'));
     }
 
-    public function create()
+    public function create(): View
     {
         return view('products.create');
     }
 
-    public function store(Request $request)
+    public function store(ViewProductControllerRequest $request): RedirectResponse
     {
-        $data = $request->validate([
-            'name' => 'required|string',
-            'sku' => 'nullable|string',
-            'barcode' => 'nullable|string',
-            'price' => 'required|numeric',
-            'active' => 'boolean'
-        ]);
-
-        $this->service->create($data);
-
-        return redirect()->route('products.index');
+        $this->service->create($request->validated());
+        
+        return $this->successStore();
     }
 
-    public function edit($id)
+    public function edit(int $id): View
     {
         $product = $this->service->getById($id);
 
         return view('products.edit', compact('product'));
     }
 
-    public function update(Request $request, $id)
+    public function update(ViewProductControllerRequest $request, int $id): RedirectResponse
     {
         $product = $this->service->getById($id);
-
-        $data = $request->validate([
-            'name' => 'required|string',
-            'sku' => 'nullable|string',
-            'barcode' => 'nullable|string',
-            'price' => 'required|numeric',
-            'active' => 'boolean'
-        ]);
-
-        $this->service->update($product, $data);
-
-        return redirect()->route('products.index');
+        
+        $this->service->update($product, $request->validated());
+        
+        return $this->successUpdate();
     }
 
-    public function destroy($id)
+    public function destroy(int $id): RedirectResponse
     {
         $product = $this->service->getById($id);
-
         $this->service->delete($product);
 
-        return redirect()->route('products.index');
+        return $this->successDelete();
     }
 }
