@@ -16,6 +16,7 @@ class ProductService
 
     public function create(array $data): Product
     {
+        $data['tenant_id'] = 2;
         $data['active'] = true;
 
     return $this->repository->create($data);

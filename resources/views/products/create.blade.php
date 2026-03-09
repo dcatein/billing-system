@@ -4,61 +4,119 @@
 
 @section('content')
 
-    <div class="card">
+<div class="card">
 
-        <div class="card-header">
+    <div class="card-header">
+        <h5>Novo Produto</h5>
+    </div>
 
-            <h5>Novo Produto</h5>
+    <div class="card-body">
 
-        </div>
+        {{-- Erros de validação --}}
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul class="mb-0">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
-        <div class="card-body">
+        {{-- Mensagem de erro --}}
+        @if(session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
 
-            <form method="POST" action="{{ route('products.store') }}">
+        {{-- Mensagem de sucesso --}}
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
-                @csrf
+        <form method="POST" action="{{ route('products.store') }}">
 
-                <div class="row">
+            @csrf
 
-                    <div class="col-md-6">
+            <div class="row">
 
-                        <label class="form-label">Nome</label>
+                <div class="col-md-6">
 
-                        <input type="text" name="name" class="form-control" required>
+                    <label class="form-label">Nome</label>
 
-                    </div>
+                    <input 
+                        type="text"
+                        name="name"
+                        value="{{ old('name') }}"
+                        class="form-control @error('name') is-invalid @enderror"
+                        required
+                    >
 
-                    <div class="col-md-3">
-
-                        <label class="form-label">SKU</label>
-
-                        <input type="text" name="sku" class="form-control">
-
-                    </div>
-
-                    <div class="col-md-2">
-
-                        <label class="form-label">Price</label>
-
-                        <input type="number" step="0.01" name="price" class="form-control" required>
-
-                    </div>
+                    @error('name')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
 
                 </div>
 
-                <div class="mt-4">
+                <div class="col-md-3">
 
-                    <button class="btn btn-primary">
+                    <label class="form-label">SKU</label>
 
-                        Salvar
+                    <input 
+                        type="text"
+                        name="sku"
+                        value="{{ old('sku') }}"
+                        class="form-control @error('sku') is-invalid @enderror"
+                    >
 
-                    </button>
+                    @error('sku')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
 
                 </div>
 
-            </form>
+                <div class="col-md-2">
 
-        </div>
+                    <label class="form-label">Price</label>
 
+                    <input 
+                        type="number"
+                        step="0.01"
+                        name="price"
+                        value="{{ old('price') }}"
+                        class="form-control @error('price') is-invalid @enderror"
+                        required
+                    >
+
+                    @error('price')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
+
+                </div>
+
+            </div>
+
+            <div class="mt-4">
+
+                <button class="btn btn-primary">
+                    Salvar
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
 
 @endsection

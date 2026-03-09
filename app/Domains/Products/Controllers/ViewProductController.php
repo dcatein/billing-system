@@ -2,14 +2,13 @@
 
 namespace App\Domains\Products\Controllers;
 
-use App\Shared\Http\Controllers\BaseCrudController;
-use App\Http\Controllers\Controller;
+use App\Shared\Http\Controllers\BaseWebController;
 use App\Domains\Products\Services\ProductService;
 use App\Domains\Products\Controllers\Requests\ViewProductControllerRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\View\View;
 
-class ViewProductController extends BaseCrudController
+class ViewProductController extends BaseWebController
 {
     protected string $route = 'products';
 
@@ -20,6 +19,7 @@ class ViewProductController extends BaseCrudController
     public function index(): View
     {
         $products = $this->service->index();
+
         return view('products.index', compact('products'));
     }
 
@@ -30,9 +30,14 @@ class ViewProductController extends BaseCrudController
 
     public function store(ViewProductControllerRequest $request): RedirectResponse
     {
-        $this->service->create($request->validated());
-        
-        return $this->successStore();
+        try {
+            $this->service->create($request->validated());
+
+            return $this->successStore();
+
+        } catch (\Throwable $e) {
+            return $this->error($e);
+        }
     }
 
     public function edit(int $id): View
@@ -44,18 +49,29 @@ class ViewProductController extends BaseCrudController
 
     public function update(ViewProductControllerRequest $request, int $id): RedirectResponse
     {
-        $product = $this->service->getById($id);
-        
-        $this->service->update($product, $request->validated());
-        
-        return $this->successUpdate();
+        try {
+            $product = $this->service->getById($id);
+
+            $this->service->update($product, $request->validated());
+
+            return $this->successUpdate();
+
+        } catch (\Throwable $e) {
+            return $this->error($e, 'edit');
+        }
     }
 
     public function destroy(int $id): RedirectResponse
     {
-        $product = $this->service->getById($id);
-        $this->service->delete($product);
+        try {
+            $product = $this->service->getById($id);
 
-        return $this->successDelete();
+            $this->service->delete($product);
+
+            return $this->successDelete();
+
+        } catch (\Throwable $e) {
+            return $this->error($e);
+        }
     }
 }
