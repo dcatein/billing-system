@@ -3,7 +3,6 @@
 namespace App\Domains\Products\Controllers;
 
 use App\Shared\Http\Controllers\BaseCrudController;
-use App\Http\Controllers\Controller;
 use App\Domains\Products\Services\ProductService;
 use App\Domains\Products\Controllers\Requests\ViewProductControllerRequest;
 use Illuminate\Http\RedirectResponse;
@@ -30,8 +29,8 @@ class ViewProductController extends BaseCrudController
 
     public function store(ViewProductControllerRequest $request): RedirectResponse
     {
-        $this->service->create($request->validated());
-        
+
+        $this->service->create($request->validated());      
         return $this->successStore();
     }
 
