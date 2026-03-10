@@ -2,14 +2,19 @@
 
 namespace App\Domains\Orders\Controllers;
 
+use App\Domains\Orders\Controllers\Requests\StoreOrderRequest;
 use App\Http\Controllers\Controller;
 use App\Domains\Orders\Services\OrderService;
+use App\Domains\Products\Services\ProductService;
+use App\Domains\Users\Services\UsersService;
 use Illuminate\Http\Request;
 
 class ViewOrderController extends Controller
 {
     public function __construct(
-        protected OrderService $service
+        protected OrderService $service,
+        protected ProductService $productService,
+        protected UsersService $usersService
     ) {}
 
     public function index()
@@ -21,19 +26,16 @@ class ViewOrderController extends Controller
 
     public function create()
     {
-        return view('orders.create');
+        $products = $this->productService->index(1000);
+        $users = $this->usersService->all();
+        
+        $data = ['products' => $products, 'users' => $users];
+        return view('orders.create', $data);
     }
 
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request)
     {
-        $data = $request->validate([
-            'status' => 'required|string',
-            'discount' => 'required|numeric',
-            'notes' => 'nullable|string',
-            'tenant_id' => 'required|integer',
-            'customer_id' => 'required|integer',
-            'user_id' => 'required|integer',
-        ]);
+        $data = $request->validated();
 
         $this->service->create($data);
 

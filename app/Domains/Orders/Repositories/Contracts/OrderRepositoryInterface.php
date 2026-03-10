@@ -16,4 +16,10 @@ interface OrderRepositoryInterface
     public function update(Order $order, array $data): Order;
 
     public function delete(Order $order): void;
+
+    public function createOrderItems(array $items, int $orderId): void;
+
+    public function createOrderPayment(array $payment): void;
+
+    public function updateOrderStatus(int $orderId, string $status): void;
 }

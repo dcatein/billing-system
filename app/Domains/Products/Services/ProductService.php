@@ -19,7 +19,7 @@ class ProductService
         $data['tenant_id'] = 2;
         $data['active'] = true;
 
-    return $this->repository->create($data);
+        return $this->repository->create($data);
     }
 
     public function update(Product $product, array $data): Product
