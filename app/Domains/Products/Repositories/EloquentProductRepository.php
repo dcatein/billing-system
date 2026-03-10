@@ -8,12 +8,31 @@ use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class EloquentProductRepository implements ProductRepositoryInterface
 {
-    public function paginate(int $perPage = 15): LengthAwarePaginator
-    {
-        return Product::query()
-            ->where('active', '=', true)
-            ->paginate($perPage);
+
+    public function paginate(array $filters, int $perPage = 15): LengthAwarePaginator
+{
+    $query = Product::query();
+
+    if (!empty($filters['search'])) {
+        $query->where(function($q) use ($filters) {
+            $q->where('name', 'like', '%' . $filters['search'] . '%')
+              ->orWhere('sku', 'like', '%' . $filters['search'] . '%');
+        });
     }
+
+    if (isset($filters['status']) && $filters['status'] !== '') {
+        $query->where('active', $filters['status']);
+    }
+
+    if (!empty($filters['sort'])) {
+        $query->orderBy(
+            $filters['sort'],
+            $filters['direction'] ?? 'asc'
+        );
+    }
+
+    return $query->paginate($perPage)->withQueryString();
+}
 
     public function findById(int $id): ?Product
     {

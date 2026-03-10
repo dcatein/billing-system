@@ -6,6 +6,7 @@ use App\Shared\Http\Controllers\BaseWebController;
 use App\Domains\Products\Services\ProductService;
 use App\Domains\Products\Controllers\Requests\ViewProductControllerRequest;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\View;
 
 class ViewProductController extends BaseWebController
@@ -16,11 +17,11 @@ class ViewProductController extends BaseWebController
         protected ProductService $service
     ) {}
 
-    public function index(): View
+    public function index(Request $request): View
     {
-        $products = $this->service->index();
+        $products = $this->service->index($request->all());
 
-        return view('products.index', compact('products'));
+    return view('products.index', compact('products'));
     }
 
     public function create(): View
