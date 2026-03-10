@@ -43,7 +43,7 @@
 
             <div class="row">
 
-                <div class="col-md-6">
+                <div class="col-md-5">
 
                     <label class="form-label">Nome</label>
 
@@ -100,6 +100,28 @@
                             {{ $message }}
                         </div>
                     @enderror
+
+                </div>
+
+                <div class="col-md-2">
+
+                    <label class="form-label d-block">Status</label>
+
+                    <div class="form-check form-switch">
+                        <input type="hidden" name="active" value="0">
+                        <input 
+                            type="checkbox"
+                            name="active"
+                            value="1"
+                            class="form-check-input"
+                            {{ old('active', true) ? 'checked' : false }}
+                        >
+
+                        <label class="form-check-label">
+                            Ativo
+                        </label>
+
+                    </div>
 
                 </div>
 
