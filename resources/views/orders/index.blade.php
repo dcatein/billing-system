@@ -17,7 +17,7 @@
                     </div>
 
                     <div class="col-4 p-2">
-                        <a href="{{ route('products.create') }}" class="btn btn-primary ">
+                        <a href="{{ route('orders.create') }}" class="btn btn-primary ">
                             Nova Venda
                         </a>
                     </div>

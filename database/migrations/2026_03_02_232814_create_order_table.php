@@ -23,15 +23,18 @@ return new class extends Migration
 
             $table->foreignId('tenant_id')
             ->constrained()
-            ->cascadeOnDelete();
+            ->nullOnDelete();
 
             $table->foreignId('customer_id')
+            ->nullable()
             ->constrained()
-            ->cascadeOnDelete();
+            ->nullOnDelete();
 
             $table->foreignId('user_id')
             ->constrained()
-            ->cascadeOnDelete();
+            ->nullOnDelete();
+
+            $table->string('discount_type')->nullable();
         });
     }
 

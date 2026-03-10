@@ -13,6 +13,7 @@ class Order extends Model
         'status',
         'subtotal',
         'discount',
+        'discount_type',
         'total',
         'notes',
         'tenant_id',
