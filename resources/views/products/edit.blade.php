@@ -13,6 +13,31 @@
         </div>
 
         <div class="card-body">
+            
+                    {{-- Erros de validação --}}
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul class="mb-0">
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                {{-- Mensagem de erro --}}
+                @if(session('error'))
+                    <div class="alert alert-danger">
+                        {{ session('error') }}
+                    </div>
+                @endif
+
+                {{-- Mensagem de sucesso --}}
+                @if(session('success'))
+                    <div class="alert alert-success">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
             <form method="POST" action="{{ route('products.update', $product->id) }}">
 
@@ -44,7 +69,27 @@
                         <input type="number" step="0.01" name="price" value="{{ $product->price }}" class="form-control">
 
                     </div>
+                                    <div class="col-md-1">
 
+                    <label class="form-label d-block">Status</label>
+
+                    <div class="form-check form-switch">
+                        <input type="hidden" name="active" value="0">
+                        <input 
+                            type="checkbox"
+                            name="active"
+                            value="1"
+                            class="form-check-input"
+                            {{ old('active', true) ? 'checked' : false }}
+                        >
+
+                        <label class="form-check-label">
+                            Ativo
+                        </label>
+
+                    </div>
+
+                </div>
 
                 </div>
 
