@@ -19,7 +19,11 @@ class ViewProductController extends BaseWebController
 
     public function index(Request $request): View
     {
-        $products = $this->service->index($request->all());
+        $validated = $request->validate([
+            'search' => 'nullable|string|max:100',
+            'page' => 'nullable|integer|min:1',
+        ]);
+        $products = $this->service->index($validated);
 
     return view('products.index', compact('products'));
     }
