@@ -93,7 +93,15 @@
     </div>
 
   </main>
-
+    @include('components.success-modal')
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        @if(session('success'))
+            var myModal = new bootstrap.Modal(document.getElementById('successModal'));
+            myModal.show();
+        @endif
+    });
+</script>
 
 </body>
 
