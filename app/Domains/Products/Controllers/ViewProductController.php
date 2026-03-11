@@ -21,11 +21,18 @@ class ViewProductController extends BaseWebController
     {
         $validated = $request->validate([
             'search' => 'nullable|string|max:100',
+            'status' => 'nullable|in:0,1',
+            'sort' => 'nullable|in:name,sku,price,active',
+            'direction' => 'nullable|in:asc,desc',
+            'per_page' => 'nullable|integer|in:10,25,50',
             'page' => 'nullable|integer|min:1',
         ]);
-        $products = $this->service->index($validated);
 
-    return view('products.index', compact('products'));
+        $perPage = $validated['per_page'] ?? 15;
+
+        $products = $this->service->index($validated, $perPage);
+
+        return view('products.index', compact('products'));
     }
 
     public function create(): View
@@ -38,7 +45,6 @@ class ViewProductController extends BaseWebController
         try {
             $this->service->create($request->validated());
             return $this->successStore();
-
         } catch (\Throwable $e) {
             return $this->error($e);
         }
@@ -59,7 +65,6 @@ class ViewProductController extends BaseWebController
             $this->service->update($product, $request->validated());
 
             return $this->successUpdate();
-
         } catch (\Throwable $e) {
             return $this->error($e, 'edit');
         }
@@ -73,7 +78,6 @@ class ViewProductController extends BaseWebController
             $this->service->delete($product);
 
             return $this->successDelete();
-
         } catch (\Throwable $e) {
             return $this->error($e);
         }
