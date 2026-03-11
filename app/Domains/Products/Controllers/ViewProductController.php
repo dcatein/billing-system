@@ -32,7 +32,6 @@ class ViewProductController extends BaseWebController
     {
         try {
             $this->service->create($request->validated());
-
             return $this->successStore();
 
         } catch (\Throwable $e) {
