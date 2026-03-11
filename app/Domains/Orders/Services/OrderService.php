@@ -5,6 +5,7 @@ namespace App\Domains\Orders\Services;
 use App\Domains\Orders\Repositories\Contracts\OrderRepositoryInterface;
 use App\Domains\Orders\Models\Order;
 use Illuminate\Pagination\LengthAwarePaginator;
+use App\Domains\Orders\DTO\CreateOrderDTO;
 
 class OrderService
 {
@@ -12,25 +13,28 @@ class OrderService
         protected OrderRepositoryInterface $repository
     ) {}
 
-    public function create(array $data): Order
+    public function create(CreateOrderDTO $data): Order
     {
-        //TODO: Criar um Service Request de Draft Order
-
-        $data['sub_total'] = $this->calculateItemsPrice($data['items']);
-        $data['total'] = $this->calculateDiscount(
-            $data['sub_total'],
-            $data['discount_type'],
-            $data['discount_value']
+        $subTotal = $this->calculateItemsPrice($data->getItems());
+        $total = $this->calculateDiscount(
+            $subTotal,
+            $data->getDiscountType(),
+            $data->getDiscountValue()
         );
-        $data['discount'] = $data['discount_value'];
 
-        $orderDraft = $this->repository->create($data);
+        $orderDraft = $this->repository->create([
+            'customer_id'   => $data->customerId,
+            'user_id'       => $data->userId,
+            'sub_total'     => $subTotal,
+            'discount'      => $data->getDiscountValue(),
+            'discount_type' => $data->getDiscountType(),
+            'total'         => $total,
+        ]);
 
-        $this->createOrderItems($data['items'], $orderDraft->id);
-        $this->createPayment($data['payments'], $orderDraft->id);
+        $this->createOrderItems($data->getItems(), $orderDraft->id);
+        $this->createPayment($data->getPayments(), $orderDraft->id);
 
-        $status = $this->orderStatus($data['payments'], $data['total']);
-
+        $status = $this->orderStatus($data->getPayments(), $total);
         $this->updateOrderStatus($orderDraft->id, $status);
 
         return $orderDraft;
@@ -89,8 +93,7 @@ class OrderService
     {
         $totalPay = 0;
 
-        foreach ($payments as $payment) 
-        {
+        foreach ($payments as $payment) {
             $totalPay = $payment['amount'] + $totalPay;
         }
 
@@ -105,7 +108,7 @@ class OrderService
         return 'draft';
     }
 
-    private function createOrderItems(array $items, $orderId) 
+    private function createOrderItems(array $items, $orderId)
     {
         $this->repository->createOrderItems($items, $orderId);
     }

@@ -8,6 +8,7 @@ use App\Domains\Orders\Services\OrderService;
 use App\Domains\Products\Services\ProductService;
 use App\Domains\Users\Services\UsersService;
 use Illuminate\Http\Request;
+use App\Domains\Orders\DTO\CreateOrderDTO;
 
 class ViewOrderController extends Controller
 {
@@ -28,16 +29,23 @@ class ViewOrderController extends Controller
     {
         $products = $this->productService->index(1000);
         $users = $this->usersService->all();
-        
+
         $data = ['products' => $products, 'users' => $users];
         return view('orders.create', $data);
     }
 
     public function store(StoreOrderRequest $request)
     {
-        $data = $request->validated();
+        $validated = $request->validated();
 
-        $this->service->create($data);
+        $orderData = new CreateOrderDTO(
+            items: $validated['items'],
+            discountType: $validated['discount_type'],
+            discountValue: (float) $validated['discount_value'],
+            payments: $validated['payments'] ?? [],
+            userId: (int) $validated['user_id']
+        );
+        $this->service->create($orderData);
 
         return redirect()->route('orders.index');
     }
