@@ -5,13 +5,20 @@
 @section('content')
 
     @php
-        function sort_link($column)
+        function sort_link($column, $label)
         {
-            $direction = request('direction') === 'asc' ? 'desc' : 'asc';
-            return request()->fullUrlWithQuery([
+            $direction = request('sort_by') === $column && request('sort_direction') === 'asc' ? 'desc' : 'asc';
+            $url = request()->fullUrlWithQuery([
                 'sort_by' => $column,
                 'sort_direction' => $direction
             ]);
+
+            $indicator = '';
+            if (request('sort_by') === $column) {
+                $indicator = request('sort_direction') === 'asc' ? ' ▲' : ' ▼';
+            }
+
+            return '<a href="'.$url.'">'.$label.$indicator.'</a>';
         }
     @endphp
 
@@ -49,6 +56,12 @@
                         </select>
                     </div>
 
+                    <div class="col-md-1 align-self-end">
+                        <a href="{{ route('orders.index') }}" class="btn btn-outline-secondary w-100">
+                            Limpar filtros
+                        </a>
+                    </div>
+
                     <div class="col-md-2 align-self-end">
                         <a href="{{ route('orders.create') }}" class="btn btn-primary w-100">
                             Nova Venda
@@ -71,34 +84,18 @@
                 </div>
 
                 <div class="datatable-wrapper datatable-loading no-footer sortable searchable fixed-columns">
-                    <div class="datatable-top">
-                        <div class="datatable-dropdown">
-                            <label>
-                                <select name="" id="" class="datatable-selector">
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="15">15</option>
-                                </select>
-                                Itens exibidos
-                            </label>
-                        </div>
-                        <div class="datatable-search">
-                            <input type="search" placeholder="Pesquisar" title="Pesquisar na tabela"
-                                class="datatable-input">
-                        </div>
-                    </div>
                     <div class="datatable-container">
 
                         <table class="table table-striped datatable datatable-table">
                             <thead>
                                 <tr>
-                                    <th>#</th>
-                                    <th>Status</th>
-                                    <th>User</th>
-                                    <th>Retirada</th>
-                                    <th>Subtotal</th>
-                                    <th>Desconto</th>
-                                    <th>Total</th>
+                                    <th>{!! sort_link('id', '#') !!}</th>
+                                    <th>{!! sort_link('status', 'Status') !!}</th>
+                                    <th>{!! sort_link('user_id', 'User') !!}</th>
+                                    <th>{!! sort_link('pickup', 'Retirada') !!}</th>
+                                    <th>{!! sort_link('subtotal', 'Subtotal') !!}</th>
+                                    <th>{!! sort_link('discount', 'Desconto') !!}</th>
+                                    <th>{!! sort_link('total', 'Total') !!}</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>

@@ -24,7 +24,7 @@ class ViewOrderController extends Controller
         $validated = $request->validate([
             'user_id' => 'nullable|string',
             'status' => 'nullable|in:0,1,2',
-            'sort_by' => 'nullable|in:status,user,customer,subtotal,total,discount',
+            'sort_by' => 'nullable|in:status,user_id,pickup,subtotal,total,discount',
             'sort_direction' => 'nullable|in:asc,desc',
             'per_page' => 'nullable|integer|in:10,25,50',
             'page' => 'nullable|integer|min:1',
