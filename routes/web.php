@@ -20,13 +20,11 @@ Route::middleware(['auth', ResolveTenant::class])->group(function () {
     })->name('dashboard')
         ->middleware('permission:dashboard');
 
-    Route::middleware(['role:manager', 'role:admin'])->group(function () {
-        Route::resource(name: 'products', controller: ViewProductController::class);
-        Route::resource(name: 'orders', controller: ViewOrderController::class)->except('show');
-        Route::put('orders/{id}/pay', [ViewOrderController::class, 'pay'])->name('orders.pay');
-        Route::put('orders/{id}/cancel', [ViewOrderController::class, 'cancel'])->name('orders.cancel');
-        Route::get('/orders/export', [ViewOrderController::class, 'export'])->name('orders.export');
-    });
+        Route::resource(name: 'products', controller: ViewProductController::class)->middleware('permission:products.all');
+        Route::resource(name: 'orders', controller: ViewOrderController::class)->except('show')->middleware('permission:orders.all');
+        Route::put('orders/{id}/pay', [ViewOrderController::class, 'pay'])->name('orders.pay')->middleware('permission:orders.all');
+        Route::put('orders/{id}/cancel', [ViewOrderController::class, 'cancel'])->name('orders.cancel')->middleware('permission:orders.all');
+        Route::get('/orders/export', [ViewOrderController::class, 'export'])->name('orders.export')->middleware('permission:orders.all');
 
     Route::middleware('role:seller')->group(function () {
         Route::get('/orders/seller', [ViewOrderController::class, 'seller'])->name('orders.seller');

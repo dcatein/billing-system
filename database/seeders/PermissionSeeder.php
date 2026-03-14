@@ -18,5 +18,8 @@ class PermissionSeeder extends Seeder
         $roleSeller = Role::create(['name' => 'seller']);
 
         Permission::create(['name' => 'dashboard'])->assignRole([$roleAdmin, $roleManager]);
+        Permission::create(['name' => 'orders.all'])->assignRole([$roleAdmin, $roleManager]);
+        Permission::create(['name' => 'products.all'])->assignRole([$roleAdmin, $roleManager]);
+        Permission::create(['name' => 'orders.seller'])->assignRole([$roleSeller]);
     }
 }

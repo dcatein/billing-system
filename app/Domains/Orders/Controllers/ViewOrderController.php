@@ -158,7 +158,6 @@ class ViewOrderController extends BaseWebController
         ], 100);
 
         $data = ['products' => $products, 'users' => $users, 'orders' => $orders];
-//dd($orders);
 
         return view('orders.seller', $data);
     }
