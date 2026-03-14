@@ -4,22 +4,69 @@
 
 @section('content')
 
+    @php
+        function sort_link($column)
+        {
+            $direction = request('direction') === 'asc' ? 'desc' : 'asc';
+            return request()->fullUrlWithQuery([
+                'sort_by' => $column,
+                'sort_direction' => $direction
+            ]);
+        }
+    @endphp
 
     <div class="col-12">
+        <form action="{{ route('orders.index') }}" method="GET" class="card shadow-lg mb-4">
+            <div class="card-body">
+                <div class="row g-3 align-items-end justify-content-between">
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Vendedor</label>
+                        <div class="input-group">
+                            <input type="text" name="user_id" class="form-control" placeholder="Código do vendedor" value="{{ request('user_id') }}">
+                            <button class="btn btn-outline-primary" type="submit">
+                                <i class="bi bi-search"></i> Pesquisar
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">Status</label>
+                        <select name="status" class="form-select" onchange="this.form.submit()">
+                            <option value="">Todos</option>
+                            <option value="1" {{ request('status') === '1' ? 'selected' : '' }}>Pendente</option>
+                            <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Cancelado</option>
+                            <option value="2" {{ request('status') === '2' ? 'selected' : '' }}>Pago</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label fw-bold">Exibir</label>
+                        <select name="per_page" class="form-select" onchange="this.form.submit()">
+                            <option value="10" {{ request('per_page') == 10 ? 'selected' : '' }}>10 por página</option>
+                            <option value="25" {{ request('per_page') == 25 ? 'selected' : '' }}>25 por página</option>
+                            <option value="50" {{ request('per_page') == 50 ? 'selected' : '' }}>50 por página</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 align-self-end">
+                        <a href="{{ route('orders.create') }}" class="btn btn-primary w-100">
+                            Nova Venda
+                        </a>
+                    </div>
+
+                </div>
+            </div>
+        </form>
+
         <div class="card recent-sales overflow-auto shadow-lg">
             <div class="card-body">
 
                 <div class="row justify-content-between">
                     <div class="col-4">
                         <h5 class="card-title">
-                            Vendas<span>| Loja</span>
+                            Vendas<span>| Listagem</span>
                         </h5>
-                    </div>
-
-                    <div class="col-4 p-2">
-                        <a href="{{ route('orders.create') }}" class="btn btn-primary ">
-                            Nova Venda
-                        </a>
                     </div>
                 </div>
 
@@ -48,7 +95,7 @@
                                     <th>#</th>
                                     <th>Status</th>
                                     <th>User</th>
-                                    <th>Customer</th>
+                                    <th>Retirada</th>
                                     <th>Subtotal</th>
                                     <th>Desconto</th>
                                     <th>Total</th>
@@ -62,7 +109,16 @@
                                         <td>{{ $order->id }}</td>
                                         <td>{{ $order->status }}</td>
                                         <td>{{ $order->user->name ?? $order->user_id }}</td>
-                                        <td>{{ $order->customer->name ?? $order->customer_id }}</td>
+                                        <td>
+                                            @if($order->pickup == 'store')
+                                                Loja
+                                            @endif
+
+                                            @if($order->pickup == 'delivery')
+                                                Delivery
+                                            @endif
+
+                                        </td>
                                         <td>R$ {{ number_format($order->subtotal, 2, ',', '.') }}</td>
                                         <td>
                                             @if($order->discount_type == 'percentual')

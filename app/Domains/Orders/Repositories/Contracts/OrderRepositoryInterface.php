@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface OrderRepositoryInterface
 {
-    public function paginate(int $perPage = 15): LengthAwarePaginator;
+    public function paginate(array $filters, int $perPage = 15): LengthAwarePaginator;
 
     public function findById(int $id): Order;
 

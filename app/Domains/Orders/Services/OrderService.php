@@ -54,9 +54,11 @@ class OrderService
         $this->repository->delete($order);
     }
 
-    public function index(int $perPage = 15): LengthAwarePaginator
+    public function index(array $filters, int $perPage = 15): LengthAwarePaginator
     {
-        return $this->repository->paginate(perPage: $perPage);
+        $preparedFilters = $this->prepareFilters($filters);
+
+        return $this->repository->paginate(filters: $preparedFilters, perPage: $perPage);
     }
 
     public function getById(int $id): Order
@@ -150,5 +152,33 @@ class OrderService
         if ($totalPaid >= $order->total) {
             $this->repository->updateOrderStatus($order->id, 'paid');
         }
+    }
+
+    private function prepareFilters(array $filters): array
+    {
+        $filters['status'] = $this->filterStatus($filters['status'] ?? null);
+
+       return $filters;
+    }
+
+    private function filterStatus(?string $status): ?string
+    {
+        if (is_null($status)) {
+            return null;
+        }
+
+        if ($status == 0) {
+            return 'cancelled';
+        }
+
+        if ($status == 1) {
+            return 'pending';
+        }
+
+        if ($status == 2) {
+            return 'paid';
+        }
+
+        return null;
     }
 }

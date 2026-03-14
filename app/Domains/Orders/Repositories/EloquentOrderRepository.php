@@ -11,9 +11,26 @@ use Illuminate\Database\Eloquent\Collection;
 
 class EloquentOrderRepository implements OrderRepositoryInterface
 {
-    public function paginate(int $perPage = 15): LengthAwarePaginator
+    public function paginate(array $filters, int $perPage = 15): LengthAwarePaginator
     {
-        return Order::with('items.product')->paginate($perPage);
+        $query = Order::with('items.product');
+
+        if (!empty($filters['user_id'])) {
+            $query->where('user_id', $filters['user_id']);
+        }
+
+        if (!empty($filters['status'])) {
+            $query->where('status', $filters['status']);
+        }
+
+        if (!empty($filters['sort_by'])) {
+            $direction = $filters['sort_direction'] ?? 'asc';
+            $query->orderBy($filters['sort_by'], $direction);
+        } else {
+            $query->orderBy('created_at', 'desc');
+        }
+
+        return $query->paginate($perPage);
     }
 
     public function findById(int $id): Order

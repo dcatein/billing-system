@@ -31,14 +31,12 @@ class ProductService
         ]);
     }
 
-    public function index(array $filters): LengthAwarePaginator 
+    public function index(array $filters, int $perPage = 15): LengthAwarePaginator
     {
-        $perPage = $filters['per_page'] ?? 15;
-    
-        return $this->repository->paginate($filters, (int) $perPage);
+        return $this->repository->paginate($filters, $perPage);
     }
 
-    public function getById(int $id) : Product 
+    public function getById(int $id) : Product
     {
         $product = $this->repository->findById($id);
 

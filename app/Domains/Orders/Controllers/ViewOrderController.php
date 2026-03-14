@@ -19,9 +19,19 @@ class ViewOrderController extends Controller
         protected UsersService $usersService
     ) {}
 
-    public function index()
+    public function index(Request $request)
     {
-        $orders = $this->service->index();
+        $validated = $request->validate([
+            'user_id' => 'nullable|string',
+            'status' => 'nullable|in:0,1,2',
+            'sort_by' => 'nullable|in:status,user,customer,subtotal,total,discount',
+            'sort_direction' => 'nullable|in:asc,desc',
+            'per_page' => 'nullable|integer|in:10,25,50',
+            'page' => 'nullable|integer|min:1',
+        ]);
+        $perPage = $validated['per_page'] ?? 15;
+
+        $orders = $this->service->index($validated, $perPage);
 
         return view('orders.index', compact('orders'));
     }
