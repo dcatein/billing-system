@@ -12,23 +12,6 @@
 
     <div class="card-body">
 
-        {{-- Erros de validação --}}
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul class="mb-0">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
-
-        {{-- Mensagem de erro --}}
-        @if(session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
 
         <form method="POST" action="{{ route('products.store') }}">
 
