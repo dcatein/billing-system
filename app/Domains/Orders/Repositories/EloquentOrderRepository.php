@@ -19,8 +19,8 @@ class EloquentOrderRepository implements OrderRepositoryInterface
             $query->where('user_id', $filters['user_id']);
         }
 
-        if (!empty($filters['status'])) {
-            $query->where('status', $filters['status']);
+        if (!empty($filters['status_type'])) {
+            $query->where('status', $filters['status_type']);
         }
 
         if (!empty($filters['created_at_start'])) {
@@ -38,7 +38,7 @@ class EloquentOrderRepository implements OrderRepositoryInterface
             $query->orderBy('created_at', 'desc');
         }
 
-        return $query->paginate($perPage);
+        return $query->paginate($perPage)->appends($filters);
     }
 
     public function findById(int $id): Order

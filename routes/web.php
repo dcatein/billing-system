@@ -20,10 +20,10 @@ Route::middleware(['auth', ResolveTenant::class])->group(function () {
     })->name('dashboard');
 
     Route::resource(name: 'products', controller: ViewProductController::class);
-    Route::resource(name: 'orders', controller: ViewOrderController::class);
+    Route::resource(name: 'orders', controller: ViewOrderController::class)->except('show');
     Route::put('orders/{id}/pay', [ViewOrderController::class, 'pay'])->name('orders.pay');
     Route::put('orders/{id}/cancel', [ViewOrderController::class, 'cancel'])->name('orders.cancel');
-
+    Route::get('/orders/export', [ViewOrderController::class, 'export'])->name('orders.export');
 
 });
 

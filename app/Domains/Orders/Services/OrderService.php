@@ -4,10 +4,14 @@ namespace App\Domains\Orders\Services;
 
 use App\Domains\Orders\Repositories\Contracts\OrderRepositoryInterface;
 use App\Domains\Orders\Models\Order;
+use App\Domains\Orders\Repositories\ExportOrderRepository;
 use App\Domains\Payments\Repositories\Contracts\PaymentRepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
+use Carbon\Carbon;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Domains\Orders\DTO\CreateOrderDTO;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Exception;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class OrderService
 {
@@ -156,7 +160,7 @@ class OrderService
 
     private function prepareFilters(array $filters): array
     {
-        $filters['status'] = $this->filterStatus($filters['status'] ?? null);
+        $filters['status_type'] = $this->filterStatus($filters['status'] ?? null);
 
        return $filters;
     }
@@ -185,5 +189,14 @@ class OrderService
     public function cancel($order, $cancelReason): void
     {
         $this->repository->cancelOrder($order, $cancelReason);
+    }
+
+    /**
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
+    public function export(array $filters): BinaryFileResponse
+    {   $filename = 'orders_' . Carbon::now()->format('Y-m-d-H-i-s') . '.csv';
+        return Excel::download(new ExportOrderRepository($this->prepareFilters($filters)), $filename);
     }
 }

@@ -12,7 +12,6 @@ use App\Domains\Orders\Repositories\EloquentOrderRepository;
 use App\Domains\Users\Repositories\Contracts\UsersRepositoryInterface;
 use App\Domains\Users\Repositories\EloquentUserRepository;
 use Illuminate\Pagination\Paginator;
-use Illuminate\Support\Facades\Blade;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -49,8 +48,5 @@ class AppServiceProvider extends ServiceProvider
     {
         Paginator::useBootstrapFive();
 
-        Blade::directive('datetime', function (string $expression) {
-            return "<?php echo ($expression)->format('m/d/Y H:i'); ?>";
-        });
     }
 }

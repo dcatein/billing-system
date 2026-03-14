@@ -25,7 +25,7 @@
     <div class="col-12">
         <form action="{{ route('orders.index') }}" method="GET" class="card shadow-lg mb-4">
             <div class="card-body">
-                <div class="row g-3 align-items-end justify-content-between">
+                <div class="row g-4 align-items-end justify-content-between">
 
                     <div class="col-md-3">
                         <label class="form-label fw-bold">Vendedor</label>
@@ -76,6 +76,15 @@
                         </a>
                     </div>
 
+                </div>
+
+                <div class="row g-4 p-2 align-items-end justify-content-between">
+                    <div class="col-md-2 align-self-end">
+                        <a href="{{ route('orders.export') }}?{{ http_build_query(request()->all()) }}" class="btn btn-success w-100">
+                            Exportar XLS
+                        </a>
+
+                    </div>
                 </div>
             </div>
         </form>

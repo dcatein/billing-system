@@ -11,6 +11,9 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Domains\Orders\DTO\CreateOrderDTO;
 use App\Domains\Orders\Models\Order;
+use PhpOffice\PhpSpreadsheet\Exception;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+
 class ViewOrderController extends BaseWebController
 {
     protected string $route = 'orders';
@@ -133,4 +136,15 @@ class ViewOrderController extends BaseWebController
 
         return redirect()->route('orders.index');
     }
+
+    /**
+     * @throws Exception
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
+    public function export(Request $request): BinaryFileResponse
+    {
+        $filters = $request->only(['user_id','status','created_at_start','created_at_end']);
+        return $this->service->export($filters);
+    }
+
 }
