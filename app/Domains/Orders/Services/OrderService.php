@@ -13,7 +13,7 @@ class OrderService
 {
     public function __construct(
         protected OrderRepositoryInterface $repository,
-        private PaymentRepositoryInterface $paymentRepository
+        private readonly PaymentRepositoryInterface $paymentRepository
     ) {}
 
     public function create(CreateOrderDTO $data): Order
@@ -32,6 +32,7 @@ class OrderService
             'discount'      => $data->getDiscountValue(),
             'discount_type' => $data->getDiscountType(),
             'total'         => $total,
+            'pickup'        => $data->pickup,
         ]);
 
         $this->createOrderItems($data->getItems(), $orderDraft->id);

@@ -35,6 +35,10 @@ migrate:
 migrate-fresh:
 	$(SAIL) artisan migrate:fresh --seed
 
+migrate-clean:
+	$(SAIL) artisan migrate:fresh
+	$(SAIL) artisan db:seed --class=BaseSeeder
+
 seed:
 	$(SAIL) artisan db:seed --class=ProductSeeder
 

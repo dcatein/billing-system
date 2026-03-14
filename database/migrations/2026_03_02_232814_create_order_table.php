@@ -35,6 +35,8 @@ return new class extends Migration
             ->nullOnDelete();
 
             $table->string('discount_type')->nullable();
+
+            $table->string('pickup')->default('store');
         });
     }
 

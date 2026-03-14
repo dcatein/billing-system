@@ -28,8 +28,9 @@ class StoreOrderRequest extends FormRequest
             'notes' => 'nullable|string',
             'customer_id' => 'nullable|integer',
             'user_id' => 'required|integer',
-            'items' => 'required|array', 
-            'payments' => 'nullable|array' //Rule::contains(['admin', 'editor']),
+            'items' => 'required|array',
+            'payments' => 'nullable|array', //Rule::contains(['admin', 'editor']),
+            'pickup' => 'nullable|string',
         ];
     }
 

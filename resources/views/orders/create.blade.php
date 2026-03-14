@@ -56,7 +56,7 @@
     <!-- Resumo dos itens -->
     <div class="row mb-3">
         <div class="col-md-12">
-            <h5>Itens adicionados</h5>
+            <h5>Produtos</h5>
             <table class="table table-sm" id="items-table">
                 <thead>
                     <tr>
@@ -71,10 +71,15 @@
             </table>
         </div>
     </div>
-    
-    <h5>Pagamentos</h5>
+
+    <h5>Total do Pedido</h5>
     <!-- Desconto e Total -->
     <div class="row mb-3">
+        <div class="col-md-1">
+            <label class="form-label">SubTotal</label>
+            <input type="text" id="order-subtotal" name="subtotal" class="form-control" readonly>
+        </div>
+
         <div class="col-md-1">
             <label class="form-label">Tipo</label>
             <select id="discount-type" name="discount_type" class="form-select">
@@ -86,11 +91,26 @@
             <label class="form-label">Desconto</label>
             <input type="number" step="0.01" id="discount-value" name="discount_value" class="form-control" value="0">
         </div>
-        <div class="col-md-2">
+        <div class="col-md-1">
             <label class="form-label">Total</label>
             <input type="text" id="order-total" name="total" class="form-control" readonly>
         </div>
     </div>
+
+    <div class="row mb-3">
+        <div class="col-md-1">
+            <label class="form-label">Retirada</label>
+            <select name="pickup" class="form-select">
+                <option value="store">Loja</option>
+                <option value="delivery">Delivery</option>
+            </select>
+        </div>
+
+    </div>
+
+    <input type="hidden" id="subtotal-hidden" name="subtotal">
+    <input type="hidden" id="total-hidden" name="total">
+    <h5>Pagamentos</h5>
         {{-- Bloco de pagamento        --}}
         @include('orders.partials.payments')
 
@@ -108,6 +128,9 @@
         const discountType = document.getElementById('discount-type');
         const discountValue = document.getElementById('discount-value');
         const orderTotal = document.getElementById('order-total');
+        const orderSubtotal = document.getElementById('order-subtotal');
+        const orderTotalHidden = document.getElementById('total-hidden');
+        const orderSubtotalHidden = document.getElementById('subtotal-hidden');
 
         function recalcTotal() {
             let subtotal = 0;
@@ -115,13 +138,21 @@
                 subtotal += parseFloat(row.dataset.total);
             });
 
+            orderSubtotal.value = 'R$ ' + subtotal.toFixed(2);
+            orderSubtotalHidden.value = 'R$ ' + subtotal.toFixed(2);
+
             let discount = parseFloat(discountValue.value) || 0;
             if (discountType.value === 'percentual') {
                 discount = subtotal * (discount / 100);
             }
 
+            if (discount > subtotal) {
+                discount = subtotal;
+            }
+
             const total = subtotal - discount;
             orderTotal.value = 'R$ ' + total.toFixed(2);
+            orderTotalHidden.value = 'R$ ' + total.toFixed(2);
         }
 
         addProductBtn.addEventListener('click', function () {
@@ -136,6 +167,7 @@
 
             const row = document.createElement('tr');
             row.dataset.total = total;
+            row.dataset.subtotal = total;
             row.innerHTML = `
                 <td>${productName}<input type="hidden" name="items[${productId}][product_id]" value="${productId}"></td>
                 <td>${qty}<input type="hidden" name="items[${productId}][quantity]" value="${qty}"></td>

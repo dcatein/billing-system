@@ -10,6 +10,7 @@ class CreateOrderDTO
         public readonly float $discountValue,
         public readonly array $payments,
         public readonly int $userId,
+        public readonly string $pickup,
         public readonly ?int $customerId = null,
     ) {}
 

@@ -37,7 +37,7 @@ class ViewOrderController extends Controller
         return view('orders.create', $data);
     }
 
-    public function store(StoreOrderRequest $request)
+    public function store(StoreOrderRequest $request): RedirectResponse
     {
         $validated = $request->validated();
 
@@ -46,7 +46,8 @@ class ViewOrderController extends Controller
             discountType: $validated['discount_type'],
             discountValue: (float) $validated['discount_value'],
             payments: $validated['payments'] ?? [],
-            userId: (int) $validated['user_id']
+            userId: (int) $validated['user_id'],
+            pickup: $validated['pickup']
         );
         $this->service->create($orderData);
 

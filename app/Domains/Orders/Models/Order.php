@@ -26,7 +26,8 @@ class Order extends Model
         'notes',
         'tenant_id',
         'customer_id',
-        'user_id'
+        'user_id',
+        'pickup',
     ];
 
     public function items()
