@@ -13,6 +13,8 @@ use App\Domains\Orders\DTO\CreateOrderDTO;
 use App\Domains\Orders\Models\Order;
 class ViewOrderController extends BaseWebController
 {
+    protected string $route = 'orders';
+
     public function __construct(
         protected OrderService $service,
         protected ProductService $productService,
@@ -51,19 +53,23 @@ class ViewOrderController extends BaseWebController
 
     public function store(StoreOrderRequest $request): RedirectResponse
     {
-        $validated = $request->validated();
+        try {
+            $validated = $request->validated();
 
-        $orderData = new CreateOrderDTO(
-            items: $validated['items'],
-            discountType: $validated['discount_type'],
-            discountValue: (float) $validated['discount_value'],
-            payments: $validated['payments'] ?? [],
-            userId: (int) $validated['user_id'],
-            pickup: $validated['pickup']
-        );
-        $this->service->create($orderData);
+            $orderData = new CreateOrderDTO(
+                items: $validated['items'],
+                discountType: $validated['discount_type'],
+                discountValue: (float) $validated['discount_value'],
+                payments: $validated['payments'] ?? [],
+                userId: (int) $validated['user_id'],
+                pickup: $validated['pickup']
+            );
+            $this->service->create($orderData);
 
-        return redirect()->route('orders.index');
+            return $this->success(message: '', targetRoute: 'index');
+        } catch (\Throwable $e) {
+            $this->error($e);
+        }
     }
 
     public function edit(Order $order, Request $request)
