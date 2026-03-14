@@ -181,4 +181,9 @@ class OrderService
 
         return null;
     }
+
+    public function cancel($order, $cancelReason): void
+    {
+        $this->repository->cancelOrder($order, $cancelReason);
+    }
 }

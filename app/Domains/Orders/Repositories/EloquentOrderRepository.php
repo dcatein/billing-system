@@ -92,4 +92,11 @@ class EloquentOrderRepository implements OrderRepositoryInterface
             'user'
         ])->findOrFail($order->id);
     }
+
+    public function cancelOrder($orderId, $cancelReason): void
+    {
+        Order::where('id', '=', $orderId)
+            ->update(
+                ['notes' => $cancelReason, 'status' => 'cancelled']);
+    }
 }

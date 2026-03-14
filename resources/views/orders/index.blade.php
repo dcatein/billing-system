@@ -91,7 +91,7 @@
                                 <tr>
                                     <th>{!! sort_link('id', '#') !!}</th>
                                     <th>{!! sort_link('status', 'Status') !!}</th>
-                                    <th>{!! sort_link('user_id', 'User') !!}</th>
+                                    <th>{!! sort_link('user_id', 'Vendedor') !!}</th>
                                     <th>{!! sort_link('pickup', 'Retirada') !!}</th>
                                     <th>{!! sort_link('subtotal', 'Subtotal') !!}</th>
                                     <th>{!! sort_link('discount', 'Desconto') !!}</th>
@@ -104,7 +104,15 @@
                                     <!-- Linha principal -->
                                     <tr class="order-row" data-order-id="{{ $order->id }}">
                                         <td>{{ $order->id }}</td>
-                                        <td>{{ $order->status }}</td>
+                                        <td>
+                                            @if($order->status == 'paid')
+                                                Pago
+                                            @elseif($order->status == 'cancelled')
+                                                Cancelado
+                                            @elseif($order->status == 'pending')
+                                                Pendente
+                                            @endif
+                                        </td>
                                         <td>{{ $order->user->name ?? $order->user_id }}</td>
                                         <td>
                                             @if($order->pickup == 'store')
@@ -129,7 +137,17 @@
                                             @if($order->status == 'pending')
                                                 <a href="{{ route('orders.edit',
                                                     [$order->id, 'action' => 'pay']) }}"
-                                                   class="btn btn-sm btn-success">Pagar</a>
+                                                   class="btn btn-sm btn-success">Pagar
+                                                </a>
+
+                                                <button
+                                                    type="button"
+                                                    class="btn btn-sm btn-danger"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#cancelModal"
+                                                    data-order-id="{{ $order->id }}">
+                                                    Cancelar
+                                                </button>
                                             @endif
 
 
@@ -199,5 +217,6 @@
         </div>
     </div>
 
+ @include('orders.partials.cancel-modal')
 
 @endsection

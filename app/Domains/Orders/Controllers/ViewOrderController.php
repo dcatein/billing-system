@@ -3,15 +3,15 @@
 namespace App\Domains\Orders\Controllers;
 
 use App\Domains\Orders\Controllers\Requests\StoreOrderRequest;
-use App\Http\Controllers\Controller;
 use App\Domains\Orders\Services\OrderService;
 use App\Domains\Products\Services\ProductService;
 use App\Domains\Users\Services\UsersService;
+use App\Shared\Http\Controllers\BaseWebController;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Domains\Orders\DTO\CreateOrderDTO;
 use App\Domains\Orders\Models\Order;
-class ViewOrderController extends Controller
+class ViewOrderController extends BaseWebController
 {
     public function __construct(
         protected OrderService $service,
@@ -115,5 +115,14 @@ class ViewOrderController extends Controller
             'order' => $order->id,
             'action' => 'pay'
         ])->with('success', 'Pagamento registrado com sucesso!');
+    }
+
+    public function cancel(Request $request, $orderId): RedirectResponse
+    {
+        $validated = $request->validate(['cancel_reason' => 'required|string']);
+
+        $this->service->cancel($orderId, $validated['cancel_reason']);
+
+        return redirect()->route('orders.index');
     }
 }
