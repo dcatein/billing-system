@@ -9,6 +9,7 @@ use App\Domains\Orders\Repositories\Contracts\OrderRepositoryInterface;
 use App\Domains\Orders\Repositories\EloquentOrderRepository;
 use App\Domains\Users\Repositories\Contracts\UsersRepositoryInterface;
 use App\Domains\Users\Repositories\EloquentUserRepository;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -38,6 +39,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Paginator::useBootstrapFive();
     }
 }

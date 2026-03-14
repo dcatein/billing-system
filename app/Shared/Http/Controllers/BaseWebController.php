@@ -14,7 +14,7 @@ abstract class BaseWebController extends Controller
     {
         return redirect()
             ->route($this->route . '.' . $targetRoute)
-            ->with('success', $message)
+            ->with('success',true)
             ->setStatusCode(Response::HTTP_SEE_OTHER);
     }
 
@@ -25,7 +25,7 @@ abstract class BaseWebController extends Controller
 
     protected function successUpdate(): RedirectResponse
     {
-        return $this->success('Registro atualizado com sucesso!', 'index');
+        return $this->success('Registro atualizado com sucesso!', 'index')->with('success',true);
     }
 
     protected function successDelete(): RedirectResponse

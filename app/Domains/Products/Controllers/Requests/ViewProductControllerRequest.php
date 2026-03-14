@@ -21,13 +21,13 @@ class ViewProductControllerRequest extends FormRequest
 public function rules(): array
 {
     return [
-        'name' => 'required|string|max:100',
-        'sku' => 'nullable|numeric|digits_between:1,100',
+        'name' => 'required|string|max:255',
+        'sku' => 'nullable|regex:/^[0-9]+$/|max:100',
         'barcode' => 'nullable|string|max:100',
         'price' => [
             'required',
             'numeric',
-            'min:0',
+            'min:1',
             'regex:/^\d+(\.\d{1,2})?$/',
         ],
         'active' => 'boolean'
@@ -43,14 +43,15 @@ public function messages(): array
         'name.max'      => 'O nome não pode ter mais de 100 caracteres.',
 
         // Mensagens para SKU e Barcode
-        'sku.digits'   => 'O SKU deve ter no máximo 100 dígitos.',
+        'sku.max'   => 'O SKU não pode ter mais de 100 caracteres numéricos.',
         'sku.numeric'   => 'O SKU deve ser um valor numérico.',
+        'sku.regex'     => 'O SKU deve conter apenas números.',
         'barcode.max'   => 'O código de barras não pode ter mais de 100 caracteres.',
 
         // Mensagens para o Preço (Validação Rigorosa)
         'price.required' => 'O preço é obrigatório.',
         'price.numeric'  => 'O preço deve ser um valor numérico.',
-        'price.min'      => 'O preço não pode ser um valor negativo.',
+        'price.min'      => 'O preço deve ser um valor positivo.',
         'price.regex'    => 'O preço deve ter no máximo duas casas decimais (ex: 10.99).',
 
         // Mensagem para o campo Active
