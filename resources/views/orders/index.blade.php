@@ -56,19 +56,30 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach($orders as $order)
+                                @forelse($orders as $order)
                                     <!-- Linha principal -->
                                     <tr class="order-row" data-order-id="{{ $order->id }}">
                                         <td>{{ $order->id }}</td>
                                         <td>{{ $order->status }}</td>
                                         <td>{{ $order->user->name ?? $order->user_id }}</td>
                                         <td>{{ $order->customer->name ?? $order->customer_id }}</td>
-                                        <td>{{ number_format($order->subtotal, 2, ',', '.') }}</td>
-                                        <td>{{ number_format($order->discount, 2, ',', '.') }}</td>
-                                        <td>{{ number_format($order->total, 2, ',', '.') }}</td>
+                                        <td>R$ {{ number_format($order->subtotal, 2, ',', '.') }}</td>
                                         <td>
-                                            <a href="{{ route('orders.edit', $order->id) }}"
-                                                class="btn btn-sm btn-primary">Editar</a>
+                                            @if($order->discount_type == 'percentual')
+                                                {{ number_format($order->discount, 2, ',', '.') }}%
+                                            @elseif($order->discount_type == 'valor')
+                                                R$ {{ number_format($order->discount, 2, ',', '.') }}
+                                            @endif
+                                        </td>
+                                        <td>R$ {{ number_format($order->total, 2, ',', '.') }}</td>
+                                        <td>
+                                            @if($order->status == 'pending')
+                                                <a href="{{ route('orders.edit',
+                                                    [$order->id, 'action' => 'pay']) }}"
+                                                   class="btn btn-sm btn-success">Pagar</a>
+                                            @endif
+
+
                                         </td>
                                     </tr>
 
@@ -90,10 +101,10 @@
                                                         <td>
                                                             {{ $item->product->name ?? $item->description }}
                                                         </td>
-                                                        <td> 
+                                                        <td>
                                                             {{ $item->quantity }}
                                                         </td>
-                                                        <td> 
+                                                        <td>
                                                             {{ number_format($item->unit_price, 2, ',', '.') }}
                                                         </td>
                                                         <td>
@@ -105,7 +116,11 @@
                                             </table>
                                         </td>
                                     </tr>
-                                @endforeach
+                                @empty
+                                    <tr>
+                                        <td colspan="5" class="text-center py-4 text-muted">Nenhum pedido encontrado</td>
+                                    </tr>
+                                @endforelse
                             </tbody>
                         </table>
 
@@ -124,16 +139,7 @@
 
                     </div>
                     <div class="datatable-info">
-                        Exibindo itens de 1 a 15
-                        <nav class="datatale-pagination">
-                            <ul class="pagination datatable-pagination-list">
-                                <li class="page-item"><a href="#" class="page-link">Anterior</a></li>
-                                <li class="page-item"><a href="#" class="page-link">1</a></li>
-                                <li class="page-item"><a href="#" class="page-link">2</a></li>
-                                <li class="page-item"><a href="#" class="page-link">3</a></li>
-                                <li class="page-item"><a href="#" class="page-link">Proximo</a></li>
-                            </ul>
-                        </nav>
+                        {{$orders->links()}}
                     </div>
                 </div>
             </div>

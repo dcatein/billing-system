@@ -19,7 +19,7 @@ function sort_link($column)
     <form action="{{ route('products.index') }}" method="GET" class="card shadow-lg mb-4">
         <div class="card-body">
             <div class="row g-3 align-items-end">
-                
+
                 <div class="col-md-5">
                     <label class="form-label fw-bold">Buscar produto</label>
                     <div class="input-group">
@@ -109,10 +109,7 @@ function sort_link($column)
                 </table>
             </div>
 
-            <div class="d-flex justify-content-between align-items-center mt-3">
-                <div class="text-muted small">
-                    Exibindo {{ $products->firstItem() ?? 0 }} a {{ $products->lastItem() ?? 0 }} de {{ $products->total() }} registros
-                </div>
+            <div class="datatable-info">
                 <div>
                     {{ $products->links() }}
                 </div>

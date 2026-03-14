@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Domains\Payments\Repositories\Contracts\PaymentRepositoryInterface;
+use App\Domains\Payments\Repositories\EloquentPaymentRepository;
 use Illuminate\Support\ServiceProvider;
 use App\Domains\Products\Repositories\Contracts\ProductRepositoryInterface;
 use App\Domains\Products\Repositories\EloquentProductRepository;
@@ -31,6 +33,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             UsersRepositoryInterface::class,
             EloquentUserRepository::class
+        );
+
+        $this->app->bind(
+            PaymentRepositoryInterface::class,
+            EloquentPaymentRepository::class
         );
     }
 

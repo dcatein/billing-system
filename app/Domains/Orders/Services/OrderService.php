@@ -4,13 +4,16 @@ namespace App\Domains\Orders\Services;
 
 use App\Domains\Orders\Repositories\Contracts\OrderRepositoryInterface;
 use App\Domains\Orders\Models\Order;
+use App\Domains\Payments\Repositories\Contracts\PaymentRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Domains\Orders\DTO\CreateOrderDTO;
 
 class OrderService
 {
     public function __construct(
-        protected OrderRepositoryInterface $repository
+        protected OrderRepositoryInterface $repository,
+        private PaymentRepositoryInterface $paymentRepository
     ) {}
 
     public function create(CreateOrderDTO $data): Order
@@ -108,12 +111,12 @@ class OrderService
         return 'draft';
     }
 
-    private function createOrderItems(array $items, $orderId)
+    private function createOrderItems(array $items, $orderId): void
     {
         $this->repository->createOrderItems($items, $orderId);
     }
 
-    private function createPayment(array $payments, $orderId)
+    private function createPayment(array $payments, $orderId): void
     {
         foreach ($payments as $payment) {
             $payment['order_id'] = $orderId;
@@ -124,5 +127,27 @@ class OrderService
     private function updateOrderStatus($orderId, $status): void
     {
         $this->repository->updateOrderStatus($orderId, $status);
+    }
+
+    public function getOrderInfo(Order $order): array
+    {
+        return $this->repository->getOrderInfo($order)->toArray();
+    }
+
+    public function pay(Order $order, array $payments): void
+    {
+        foreach ($payments as $paymentData) {
+            $this->paymentRepository->create([
+                'order_id'     => $order->id,
+                'method'       => $paymentData['method'],
+                'amount'       => $paymentData['amount'],
+                'installments' => $paymentData['installments'] ?? null,
+            ]);
+        }
+
+        $totalPaid = $order->payments()->sum('amount');
+        if ($totalPaid >= $order->total) {
+            $this->repository->updateOrderStatus($order->id, 'paid');
+        }
     }
 }

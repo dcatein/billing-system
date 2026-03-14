@@ -21,6 +21,8 @@ Route::middleware(['auth', ResolveTenant::class])->group(function () {
 
     Route::resource(name: 'products', controller: ViewProductController::class);
     Route::resource(name: 'orders', controller: ViewOrderController::class);
+    Route::put('orders/{id}/pay', ViewOrderController::class . '@pay')->name('orders.pay');
+
 });
 
 

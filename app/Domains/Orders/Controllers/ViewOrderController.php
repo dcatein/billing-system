@@ -7,9 +7,10 @@ use App\Http\Controllers\Controller;
 use App\Domains\Orders\Services\OrderService;
 use App\Domains\Products\Services\ProductService;
 use App\Domains\Users\Services\UsersService;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use App\Domains\Orders\DTO\CreateOrderDTO;
-
+use App\Domains\Orders\Models\Order;
 class ViewOrderController extends Controller
 {
     public function __construct(
@@ -27,7 +28,9 @@ class ViewOrderController extends Controller
 
     public function create()
     {
-        $products = $this->productService->index(1000);
+        $filters = ['per_page' => 1000];
+
+        $products = $this->productService->index($filters);
         $users = $this->usersService->all();
 
         $data = ['products' => $products, 'users' => $users];
@@ -50,11 +53,10 @@ class ViewOrderController extends Controller
         return redirect()->route('orders.index');
     }
 
-    public function edit($id)
+    public function edit(Order $order, Request $request)
     {
-        $order = $this->service->getById($id);
-
-        return view('orders.edit', compact('order'));
+        $fullOrder = $this->service->getOrderInfo($order);
+        return view('orders.edit', compact('fullOrder'));
     }
 
     public function update(Request $request, $id)
@@ -67,7 +69,6 @@ class ViewOrderController extends Controller
             'discount' => 'required|numeric',
             'total' => 'required|numeric',
             'notes' => 'nullable|string',
-            'tenant_id' => 'required|integer',
             'customer_id' => 'required|integer',
             'user_id' => 'required|integer',
         ]);
@@ -84,5 +85,24 @@ class ViewOrderController extends Controller
         $this->service->delete($order);
 
         return redirect()->route('orders.index');
+    }
+
+    public function pay(Request $request, $orderId): RedirectResponse
+    {
+        $validated = $request->validate([
+            'payments' => 'required|array',
+            'payments.*.method' => 'required|string',
+            'payments.*.amount' => 'required|numeric|min:0.01',
+            'payments.*.installments' => 'nullable|integer|min:1',
+        ]);
+
+        $order = Order::findOrFail($orderId);
+
+        $this->service->pay($order, $validated['payments']);
+
+        return redirect()->route('orders.index', [
+            'order' => $order->id,
+            'action' => 'pay'
+        ])->with('success', 'Pagamento registrado com sucesso!');
     }
 }

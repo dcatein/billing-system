@@ -4,6 +4,7 @@ namespace App\Domains\Orders\Repositories\Contracts;
 
 use App\Domains\Orders\Models\Order;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
+use Illuminate\Database\Eloquent\Collection;
 
 interface OrderRepositoryInterface
 {
@@ -22,4 +23,6 @@ interface OrderRepositoryInterface
     public function createOrderPayment(array $payment): void;
 
     public function updateOrderStatus(int $orderId, string $status): void;
+
+    public function getOrderInfo(Order $order): ?Order;
 }

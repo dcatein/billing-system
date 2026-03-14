@@ -7,6 +7,7 @@ use App\Domains\Orders\Models\Order;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use App\Domains\Orders\Models\OrderItem;
 use App\Domains\Payments\Models\Payment;
+use Illuminate\Database\Eloquent\Collection;
 
 class EloquentOrderRepository implements OrderRepositoryInterface
 {
@@ -64,5 +65,14 @@ class EloquentOrderRepository implements OrderRepositoryInterface
     {
         Order::where('id', '=', $orderId)
             ->update(['status' => $status]);
+    }
+
+    public function getOrderInfo(Order $order): Order
+    {
+        return Order::with([
+            'items.product',
+            'payments',
+            'user'
+        ])->findOrFail($order->id);
     }
 }
