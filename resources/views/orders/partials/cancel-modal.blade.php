@@ -17,7 +17,7 @@
                     </div>
                     <div class="d-flex justify-content-center gap-3 mt-4">
                         <button type="button" class="btn btn-light px-4" data-bs-dismiss="modal">Voltar</button>
-                        <button type="submit" class="btn btn-dark px-4">Confirmar Cancelamento</button>
+                        <button type="submit" class="btn btn-dark px-4">Confirmar</button>
                     </div>
                 </form>
             </div>

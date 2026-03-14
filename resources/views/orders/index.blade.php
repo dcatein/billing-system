@@ -37,7 +37,7 @@
                         </div>
                     </div>
 
-                    <div class="col-md-2">
+                    <div class="col-md-1">
                         <label class="form-label fw-bold">Status</label>
                         <select name="status" class="form-select" onchange="this.form.submit()">
                             <option value="">Todos</option>
@@ -45,6 +45,14 @@
                             <option value="0" {{ request('status') === '0' ? 'selected' : '' }}>Cancelado</option>
                             <option value="2" {{ request('status') === '2' ? 'selected' : '' }}>Pago</option>
                         </select>
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label fw-bold">Data de criação</label>
+                        <div class="input-group">
+                            <input type="date" name="created_at_start" class="form-control" value="{{ request('created_at_start') }}" aria-label="Início" onchange="this.form.submit()">
+                            <input type="date" name="created_at_end" class="form-control" value="{{ request('created_at_end') }}" aria-label="Fim" onchange="this.form.submit()">
+                        </div>
                     </div>
 
                     <div class="col-md-2">
@@ -96,6 +104,7 @@
                                     <th>{!! sort_link('subtotal', 'Subtotal') !!}</th>
                                     <th>{!! sort_link('discount', 'Desconto') !!}</th>
                                     <th>{!! sort_link('total', 'Total') !!}</th>
+                                    <th>{!! sort_link('created_at', 'Data da Venda') !!}</th>
                                     <th>Ações</th>
                                 </tr>
                             </thead>
@@ -133,6 +142,7 @@
                                             @endif
                                         </td>
                                         <td>R$ {{ number_format($order->total, 2, ',', '.') }}</td>
+                                        <td>{{ ($order->created_at)->format('d/m/Y')  }}</td>
                                         <td>
                                             @if($order->status == 'pending')
                                                 <a href="{{ route('orders.edit',

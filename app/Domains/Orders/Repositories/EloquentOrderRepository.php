@@ -23,6 +23,14 @@ class EloquentOrderRepository implements OrderRepositoryInterface
             $query->where('status', $filters['status']);
         }
 
+        if (!empty($filters['created_at_start'])) {
+            $query->where('created_at', '>=', $filters['created_at_start']);
+        }
+
+        if (!empty($filters['created_at_end'])) {
+            $query->where('created_at', '<=', $filters['created_at_end']);
+        }
+
         if (!empty($filters['sort_by'])) {
             $direction = $filters['sort_direction'] ?? 'asc';
             $query->orderBy($filters['sort_by'], $direction);
