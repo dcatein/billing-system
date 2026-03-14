@@ -147,4 +147,20 @@ class ViewOrderController extends BaseWebController
         return $this->service->export($filters);
     }
 
+    public function seller()
+    {
+        $filters = ['per_page' => 1000];
+
+        $products = $this->productService->index($filters);
+        $users = $this->usersService->all();
+        $orders = $this->service->index([
+            'status' => 1
+        ], 100);
+
+        $data = ['products' => $products, 'users' => $users, 'orders' => $orders];
+//dd($orders);
+
+        return view('orders.seller', $data);
+    }
+
 }
