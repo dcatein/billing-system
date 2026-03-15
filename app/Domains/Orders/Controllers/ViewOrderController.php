@@ -80,7 +80,7 @@ class ViewOrderController extends BaseWebController
         }
     }
 
-    public function edit(Order $order, Request $request)
+    public function edit(int $order)
     {
         $fullOrder = $this->service->getOrderInfo($order);
         return view('orders.edit', compact('fullOrder'));
@@ -127,10 +127,12 @@ class ViewOrderController extends BaseWebController
 
         $this->service->pay($order, $validated['payments']);
 
-        return redirect()->route('orders.index', [
-            'order' => $order->id,
-            'action' => 'pay'
-        ])->with('success', 'Pagamento registrado com sucesso!');
+        $targetRoute = 'index';
+        if (auth()->user()->hasRole('seller')) {
+            $targetRoute = 'seller';
+        }
+
+        return $this->success(message: 'Pagamento registrado com sucesso!', targetRoute: $targetRoute);
     }
 
     public function cancel(Request $request, $orderId): RedirectResponse

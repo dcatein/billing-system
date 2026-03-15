@@ -21,15 +21,17 @@ Route::middleware(['auth', ResolveTenant::class])->group(function () {
         ->middleware('permission:dashboard');
 
         Route::resource(name: 'products', controller: ViewProductController::class)->middleware('permission:products.all');
-        Route::resource(name: 'orders', controller: ViewOrderController::class)->except('show')->middleware('permission:orders.all');
-        Route::put('orders/{id}/pay', [ViewOrderController::class, 'pay'])->name('orders.pay')->middleware('permission:orders.all');
-        Route::put('orders/{id}/cancel', [ViewOrderController::class, 'cancel'])->name('orders.cancel')->middleware('permission:orders.all');
-        Route::get('/orders/export', [ViewOrderController::class, 'export'])->name('orders.export')->middleware('permission:orders.all');
 
-    Route::middleware('role:seller')->group(function () {
-        Route::get('/orders/seller', [ViewOrderController::class, 'seller'])->name('orders.seller');
-        Route::post('/orders', [ViewOrderController::class, 'store'])->name('orders.store');
-    });
+        Route::get('orders', [ViewOrderController::class, 'index'])->name('orders.index')->middleware('role:admin|manager');
+        Route::get('orders/create', [ViewOrderController::class, 'create'])->name('orders.create');
+        Route::post('orders', [ViewOrderController::class, 'store'])->name('orders.store');
+        Route::get('/orders/{id}/edit', [ViewOrderController::class, 'edit'])->name('orders.edit');
+
+        Route::put('orders/{id}/pay', [ViewOrderController::class, 'pay'])->name('orders.pay');
+        Route::put('orders/{id}/cancel', [ViewOrderController::class, 'cancel'])->name('orders.cancel')->middleware('role:admin|manager');
+        Route::get('/orders/export', [ViewOrderController::class, 'export'])->name('orders.export')->middleware('role:admin|role:manager');
+
+        Route::get('/orders/seller', [ViewOrderController::class, 'seller'])->name('orders.seller')->middleware('role:seller');
 
 });
 

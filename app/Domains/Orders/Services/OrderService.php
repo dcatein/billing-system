@@ -136,7 +136,7 @@ class OrderService
         $this->repository->updateOrderStatus($orderId, $status);
     }
 
-    public function getOrderInfo(Order $order): array
+    public function getOrderInfo(int $order): array
     {
         return $this->repository->getOrderInfo($order)->toArray();
     }

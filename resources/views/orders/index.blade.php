@@ -155,7 +155,7 @@
                                         <td>
                                             @if($order->status == 'pending')
                                                 <a href="{{ route('orders.edit',
-                                                    [$order->id, 'action' => 'pay']) }}"
+                                                    [$order->id]) }}"
                                                    class="btn btn-sm btn-success">Pagar
                                                 </a>
 

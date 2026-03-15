@@ -24,7 +24,7 @@ interface OrderRepositoryInterface
 
     public function updateOrderStatus(int $orderId, string $status): void;
 
-    public function getOrderInfo(Order $order): ?Order;
+    public function getOrderInfo(int $order): ?Order;
 
     public function cancelOrder($orderId, $cancelReason): void;
 }

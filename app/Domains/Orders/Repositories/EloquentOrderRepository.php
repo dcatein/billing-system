@@ -92,13 +92,13 @@ class EloquentOrderRepository implements OrderRepositoryInterface
             ->update(['status' => $status]);
     }
 
-    public function getOrderInfo(Order $order): Order
+    public function getOrderInfo(int $order): Order
     {
         return Order::with([
             'items.product',
             'payments',
             'user'
-        ])->findOrFail($order->id);
+        ])->findOrFail($order);
     }
 
     public function cancelOrder($orderId, $cancelReason): void

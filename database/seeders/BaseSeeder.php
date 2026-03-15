@@ -112,6 +112,6 @@ class BaseSeeder extends Seeder
             'created_at' => now(),
             'updated_at' => now()
         ]);
-        $user->assignRole(['admin']);
+        $user->assignRole('admin');
     }
 }
