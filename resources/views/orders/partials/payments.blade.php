@@ -16,8 +16,7 @@
 
 
         function getOrderTotal() {
-            console.log(orderTotalInput);
-                return parseFloat(orderTotalInput.value.replace(/[^\d.,]/g, '').replace(',', '.')) || 0;
+            return parseFloat(orderTotalInput.value.replace(/[^\d.,]/g, '').replace(',', '.')) || 0;
         }
 
         function recalcPayments() {

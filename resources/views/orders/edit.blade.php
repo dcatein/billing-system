@@ -71,6 +71,8 @@
                     </div>
                 </div>
 
+                <input type="hidden" id="subtotal-hidden" name="subtotal" value={{$fullOrder['subtotal']}}>
+                <input type="hidden" id="total-hidden" name="total" value={{$fullOrder['total']}}>
                 <!-- Pagamentos -->
                 @include('orders.partials.payments')
 

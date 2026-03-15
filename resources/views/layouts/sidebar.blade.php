@@ -21,26 +21,6 @@
         </a>
       </li>
       <hr>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="bi bi-person"></i>
-          <span>Fornecedores</span>
-        </a>
-      </li>
-      <hr>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="bi bi-journal-text"></i>
-          <span>Relatórios</span>
-        </a>
-      </li>
-      <hr>
-      <li class="nav-item">
-        <a href="#" class="nav-link">
-          <i class="bi bi-gear"></i>
-          <span>Configurações</span>
-        </a>
-      </li>
       <hr>
     </ul>
   </aside>
