@@ -34,13 +34,13 @@
     {{-- <div class="d-flex align-items-center container-fluid justify-content-between justify-content-sm-start"> --}}
       <div class="row justify-content-between col-12">
         <div class="col-8">
-          <a href="index.html">
-            {{-- <img src="assets/img/goat-svgrepo-com.svg" alt="Logo"> --}}
-            <span class="text-white">Billing Saas</span>
-          </a>
-          <i class="bi bi-list toggle-sidebar-btn btn" data-bs-toggle="collapse" aria-expanded="false"
-            data-bs-target="#sidebar" role="button" aria-controls="#sidebar"></i>
-
+            @hasanyrole('manager|admin')
+                  <a href="{{ route('dashboard') }}">
+                    <span class="text-white">Billing Saas</span>
+                  </a>
+                  <i class="bi bi-list toggle-sidebar-btn btn" data-bs-toggle="collapse" aria-expanded="false"
+                    data-bs-target="#sidebar" role="button" aria-controls="#sidebar"></i>
+            @endhasanyrole
         </div>
 
         <div class="col-2 offset-md-2 p-2 ">
@@ -52,7 +52,7 @@
             </button>
             <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
               <li><a class="dropdown-item" href="#">Edit</a></li>
-              
+
               <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <li>
@@ -77,9 +77,9 @@
 
 
   <main class="main" id="top">
-
-    @include('layouts.sidebar')
-
+    @hasanyrole('manager|admin')
+        @include('layouts.sidebar')
+    @endhasanyrole
     <div class="content">
 
       @include('layouts.topbar')

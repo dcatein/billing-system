@@ -69,9 +69,14 @@ class ViewOrderController extends BaseWebController
             );
             $this->service->create($orderData);
 
-            return $this->success(message: '', targetRoute: 'index');
+            $targetRoute = 'index';
+            if (auth()->user()->hasRole('seller')) {
+                $targetRoute = 'seller';
+            }
+
+            return $this->success(message: '', targetRoute: $targetRoute);
         } catch (\Throwable $e) {
-            $this->error($e);
+            return $this->error($e);
         }
     }
 

@@ -28,6 +28,7 @@ Route::middleware(['auth', ResolveTenant::class])->group(function () {
 
     Route::middleware('role:seller')->group(function () {
         Route::get('/orders/seller', [ViewOrderController::class, 'seller'])->name('orders.seller');
+        Route::post('/orders', [ViewOrderController::class, 'store'])->name('orders.store');
     });
 
 });

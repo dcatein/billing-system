@@ -35,7 +35,7 @@
     <div class="row mb-3">
         <div class="col-md-6">
             <label class="form-label">Produtos</label>
-            <select id="product-select" class="form-select">
+            <select id="product-select" class="form-select" required>
                 <option value="">Selecione um produto</option>
                 @foreach($products as $product)
                     <option value="{{ $product->id }}" data-price="{{ $product->price }}">
