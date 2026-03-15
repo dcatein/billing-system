@@ -84,7 +84,7 @@ function sort_link($column)
                     <tbody>
                         @forelse($products as $product)
                         <tr>
-                            <td>{{ Str::limit($product->name, 30, '...') }}</td>
+                            <td>{{ Str::limit($product->name, 80, '...') }}</td>
                             <td>{{ $product->sku }}</td>
                             <td>R$ {{ number_format($product->price, 2, ',', '.') }}</td>
                             <td>

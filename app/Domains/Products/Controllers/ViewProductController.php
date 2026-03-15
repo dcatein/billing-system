@@ -60,13 +60,17 @@ class ViewProductController extends BaseWebController
     public function update(ViewProductControllerRequest $request, int $id): RedirectResponse
     {
         try {
+
             $product = $this->service->getById($id);
 
             $this->service->update($product, $request->validated());
 
             return $this->successUpdate();
-        } catch (\Throwable $e) {
-            return $this->error($e, 'edit');
+
+    } catch (\Throwable $e) {
+
+        return $this->error($e, 'edit', $id);
+
         }
     }
 

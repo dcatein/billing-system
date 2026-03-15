@@ -5,6 +5,7 @@ namespace App\Shared\Http\Controllers;
 use Illuminate\Http\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use App\Http\Controllers\Controller;
+use Illuminate\Validation\ValidationException;
 
 abstract class BaseWebController extends Controller
 {
@@ -14,7 +15,7 @@ abstract class BaseWebController extends Controller
     {
         return redirect()
             ->route($this->route . '.' . $targetRoute)
-            ->with('success',true)
+            ->with('success', $message)
             ->setStatusCode(Response::HTTP_SEE_OTHER);
     }
 
@@ -33,11 +34,18 @@ abstract class BaseWebController extends Controller
         return $this->success('Registro excluído com sucesso!', 'index');
     }
 
-    protected function error(\Throwable $e, string $targetRoute = 'create'): RedirectResponse
+    protected function error(\Throwable $e, string $view, $param = null): RedirectResponse
     {
+        if ($e instanceof ValidationException) {
+            return redirect()
+                ->route($this->route . '.' . $view, $param)
+                ->withErrors($e->errors())
+                ->withInput();
+    }
+
         return redirect()
-            ->route($this->route . '.' . $targetRoute)
-            ->withInput()
-            ->with('error', 'Erro na operação.');
+            ->route($this->route . '.' . $view, $param)
+            ->withErrors(['error' => $e->getMessage()])
+            ->withInput();
     }
 }

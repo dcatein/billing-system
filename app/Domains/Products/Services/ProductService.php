@@ -6,6 +6,7 @@ use App\Domains\Products\Repositories\Contracts\ProductRepositoryInterface;
 use App\Domains\Products\Models\Product;
 use Illuminate\Pagination\LengthAwarePaginator;
 use App\Domains\Products\Exceptions\ProductNotFoundException;
+use Illuminate\Validation\ValidationException;
 
 
 class ProductService
@@ -21,8 +22,14 @@ class ProductService
 
     public function update(Product $product, array $data): Product
     {
-        return $this->repository->update($product, $data);
-    }
+        if ($product->sku !== null && blank($data['sku'] ?? null)) {
+            throw ValidationException::withMessages([
+            'sku' => 'O SKU é obrigatório pois já foi definido anteriormente.'
+            ]);
+        }
+
+    return $this->repository->update($product, $data);
+    }      
 
     public function deactivate(Product $product): Product
     {
