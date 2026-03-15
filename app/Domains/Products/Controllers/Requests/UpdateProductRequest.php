@@ -23,7 +23,7 @@ class UpdateProductRequest extends FormRequest
     {
         return [
                 'name' => 'required|string|max:255',
-                'sku' => 'nullable|string|max:100',
+                'sku' => 'sometimes|nullable|string|max:100',
                 'barcode' => 'nullable|string|max:100',
                 'price' => [
                     'required',

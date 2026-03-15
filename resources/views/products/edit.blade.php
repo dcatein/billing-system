@@ -4,83 +4,95 @@
 
 @section('content')
 
-    <div class="card">
+<div class="card">
 
-        <div class="card-header">
+    <div class="card-header">
+        <h5>Edit Product</h5>
+    </div>
 
-            <h5>Edit Product</h5>
+    <div class="card-body">
 
-        </div>
+        <form method="POST" action="{{ route('products.update', $product->id) }}">
 
-        <div class="card-body">
-            
-                    {{-- Erros de validação --}}
-                @if ($errors->any())
-                    <div class="alert alert-danger">
-                        <ul class="mb-0">
-                            @foreach ($errors->all() as $error)
-                                <li>{{ $error }}</li>
-                            @endforeach
-                        </ul>
-                    </div>
-                @endif
+            @csrf
+            @method('PUT')
 
-                {{-- Mensagem de erro --}}
-                @if(session('error'))
-                    <div class="alert alert-danger">
-                        {{ session('error') }}
-                    </div>
-                @endif
+            <div class="row">
 
-                {{-- Mensagem de sucesso --}}
-                @if(session('success'))
-                    <div class="alert alert-success">
-                        {{ session('success') }}
-                    </div>
-                @endif
+                <div class="col-md-5">
 
-            <form method="POST" action="{{ route('products.update', $product->id) }}">
+                    <label class="form-label">Nome</label>
 
-                @csrf
-                @method('PUT')
+                    <input 
+                        type="text"
+                        name="name"
+                        value="{{ old('name', $product->name) }}"
+                        class="form-control @error('name') is-invalid @enderror"
+                        required
+                    >
 
-                <div class="row">
+                    @error('name')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
 
-                    <div class="col-md-6">
+                </div>
 
-                        <label class="form-label">Nome</label>
+                <div class="col-md-3">
 
-                        <input type="text" name="name" value="{{ $product->name }}" class="form-control" required>
+                    <label class="form-label">SKU</label>
 
-                    </div>
+                    <input 
+                        type="text"
+                        name="sku"
+                        value="{{ old('sku', $product->sku) }}"
+                        class="form-control @error('sku') is-invalid @enderror"
+                    >
 
-                    <div class="col-md-3">
+                        @error('sku')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                        @enderror
 
-                        <label class="form-label">SKU</label>
+                </div>
 
-                        <input type="text" name="sku" value="{{ $product->sku }}" class="form-control">
+                <div class="col-md-2">
 
-                    </div>
+                    <label class="form-label">Preço</label>
 
-                    <div class="col-md-2">
+                    <input 
+                        type="number"
+                        step="0.01"
+                        name="price"
+                        value="{{ old('price', $product->price) }}"
+                        class="form-control @error('price') is-invalid @enderror"
+                        required
+                    >
 
-                        <label class="form-label">Preço</label>
+                    @error('price')
+                        <div class="invalid-feedback">
+                            {{ $message }}
+                        </div>
+                    @enderror
 
-                        <input type="number" step="0.01" name="price" value="{{ $product->price }}" class="form-control">
+                </div>
 
-                    </div>
-                                    <div class="col-md-1">
+                <div class="col-md-2">
 
                     <label class="form-label d-block">Status</label>
 
                     <div class="form-check form-switch">
+
                         <input type="hidden" name="active" value="0">
+
                         <input 
                             type="checkbox"
                             name="active"
                             value="1"
                             class="form-check-input"
-                            {{ old('active', true) ? 'checked' : false }}
+                            {{ old('active', $product->active) ? 'checked' : '' }}
                         >
 
                         <label class="form-check-label">
@@ -91,22 +103,20 @@
 
                 </div>
 
-                </div>
+            </div>
 
-                <div class="mt-4">
+            <div class="mt-4">
 
-                    <button class="btn btn-primary">
+                <button class="btn btn-primary">
+                    Atualizar
+                </button>
 
-                        Atualizar
+            </div>
 
-                    </button>
-
-                </div>
-
-            </form>
-
-        </div>
+        </form>
 
     </div>
+
+</div>
 
 @endsection
