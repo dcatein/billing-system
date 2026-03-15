@@ -21,6 +21,5 @@
         </a>
       </li>
       <hr>
-      <hr>
     </ul>
   </aside>

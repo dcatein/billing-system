@@ -78,6 +78,8 @@
 
                 <div class="mt-4">
                     <button class="btn btn-primary">Salvar</button>
+                    <a class="btn btn-secondary" href="{{route(('orders.index'))}}">Cancelar</a>
+
                 </div>
             </form>
         </div>

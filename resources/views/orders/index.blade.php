@@ -81,7 +81,7 @@
                 <div class="row g-4 p-2 align-items-end justify-content-between">
                     <div class="col-md-2 align-self-end">
                         <a href="{{ route('orders.export') }}?{{ http_build_query(request()->all()) }}" class="btn btn-success w-100">
-                            Exportar XLS
+                            Exportar Relatório
                         </a>
 
                     </div>
@@ -106,13 +106,13 @@
                         <table class="table table-striped datatable datatable-table">
                             <thead>
                                 <tr>
-                                    <th>{!! sort_link('id', '#') !!}</th>
+                                    <th>{!! sort_link('id', 'ID Pedido') !!}</th>
                                     <th>{!! sort_link('status', 'Status') !!}</th>
                                     <th>{!! sort_link('user_id', 'Vendedor') !!}</th>
-                                    <th>{!! sort_link('pickup', 'Retirada') !!}</th>
                                     <th>{!! sort_link('subtotal', 'Subtotal') !!}</th>
-                                    <th>{!! sort_link('discount', 'Desconto') !!}</th>
                                     <th>{!! sort_link('total', 'Total') !!}</th>
+                                    <th>{!! sort_link('discount', 'Desconto') !!}</th>
+                                    <th>{!! sort_link('pickup', 'Retirada') !!}</th>
                                     <th>{!! sort_link('created_at', 'Data da Venda') !!}</th>
                                     <th>Ações</th>
                                 </tr>
@@ -131,7 +131,16 @@
                                                 Pendente
                                             @endif
                                         </td>
-                                        <td>{{ $order->user->name ?? $order->user_id }}</td>
+                                        <td>{{$order->user_id . ' - ' . $order->user->name  }}</td>
+                                        <td>R$ {{ number_format($order->subtotal, 2, ',', '.') }}</td>
+                                        <td>R$ {{ number_format($order->total, 2, ',', '.') }}</td>
+                                        <td>
+                                            @if($order->discount_type == 'percentual')
+                                                {{ number_format($order->discount, 2, ',', '.') }}%
+                                            @elseif($order->discount_type == 'valor')
+                                                R$ {{ number_format($order->discount, 2, ',', '.') }}
+                                            @endif
+                                        </td>
                                         <td>
                                             @if($order->pickup == 'store')
                                                 Loja
@@ -142,15 +151,6 @@
                                             @endif
 
                                         </td>
-                                        <td>R$ {{ number_format($order->subtotal, 2, ',', '.') }}</td>
-                                        <td>
-                                            @if($order->discount_type == 'percentual')
-                                                {{ number_format($order->discount, 2, ',', '.') }}%
-                                            @elseif($order->discount_type == 'valor')
-                                                R$ {{ number_format($order->discount, 2, ',', '.') }}
-                                            @endif
-                                        </td>
-                                        <td>R$ {{ number_format($order->total, 2, ',', '.') }}</td>
                                         <td>{{ ($order->created_at)->format('d/m/Y')  }}</td>
                                         <td>
                                             @if($order->status == 'pending')
@@ -204,6 +204,9 @@
                                                     @endforeach
                                                 </tbody>
                                             </table>
+                                            @if($order->status == 'cancelled')
+                                                <p><b>Motivo do Cancelamento:</b> {{$order->notes}}</p>
+                                            @endif
                                         </td>
                                     </tr>
                                 @empty
