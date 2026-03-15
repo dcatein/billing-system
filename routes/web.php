@@ -29,7 +29,7 @@ Route::middleware(['auth', ResolveTenant::class])->group(function () {
 
         Route::put('orders/{id}/pay', [ViewOrderController::class, 'pay'])->name('orders.pay');
         Route::put('orders/{id}/cancel', [ViewOrderController::class, 'cancel'])->name('orders.cancel')->middleware('role:admin|manager');
-        Route::get('/orders/export', [ViewOrderController::class, 'export'])->name('orders.export')->middleware('role:admin|role:manager');
+        Route::get('/orders/export', [ViewOrderController::class, 'export'])->name('orders.export')->middleware('role:admin|manager');
 
         Route::get('/orders/seller', [ViewOrderController::class, 'seller'])->name('orders.seller')->middleware('role:seller');
 
